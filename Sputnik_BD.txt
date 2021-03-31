@@ -1,5 +1,12 @@
 Datos de la Base de Datos
 
+Tunel SSH
+SSH Host: 198.54.125.222
+Puerto: 21098
+Usuario SSH: axclzgpy
+Contraseña SSH: 30dpr3538T@#alex
+
+Base de Datos
 BD: axclzgpy_sputnik-VII
 Usuario: axclzgpy_sputnik
 Contraseña: jU0x3CV}Dv;c@wg67L
