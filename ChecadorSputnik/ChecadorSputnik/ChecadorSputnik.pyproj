@@ -22,6 +22,20 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ChecadorSputnik.py" />
+    <Compile Include="Asistencia.py">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="iconos\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="iconos\down-arrow.png" />
+    <Content Include="iconos\file.png" />
+    <Content Include="iconos\home.png" />
+    <Content Include="iconos\persona.png" />
+    <Content Include="iconos\search.png" />
+    <Content Include="iconos\up-arrow.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
