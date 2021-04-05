@@ -25,6 +25,9 @@
     <Compile Include="Asistencia.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Empleado.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="iconos\" />
