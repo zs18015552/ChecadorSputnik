@@ -1,10 +1,12 @@
 from tkinter import *
 from tkinter import messagebox
+import mysql.connector as mysql
 
 class Empleado():
     def consultarEmpleado(self, idEmpleado, nombre, apellidoP, apellidoM, db):
+        #Consulta si el empleado existe
         comandos = db.cursor()
-        query = "SELECT nombre, apellidoPaterno, apellidoMaterno from Empleados WHERE idEmpleado = {} AND estado = 1".format(idEmpleado)
+        query = "SELECT nombre, apellidoPaterno, apellidoMaterno from Empleados WHERE idEmpleado = {} AND estado = 1".format(idEmpleado.get())
         comandos.execute(query)
         resultado = comandos.fetchone()
 
@@ -62,6 +64,7 @@ class Empleado():
         idEmpleado.focus()
 
     def altaEmpleado(self, idEmpleado, nombre,apellidoP, apellidoM, db):
+        #Verifica que todos los campos este llenos
         if (not nombre.get()) or (not apellidoP.get()) or (not apellidoM.get()):
             mensaje = messagebox.showerror('¡Error!','Favor de llenar todos los campos.')
         else:     
@@ -80,6 +83,7 @@ class Empleado():
                 idEmpleado.config(state='disabled')
     
     def bajaEmpleado(self, idEmpleado, nombre, apellidoP, apellidoM, db):
+        #Verifica que el campo de idEmpleado este lleno
         if (not idEmpleado.get()):
             mensaje = messagebox.showerror('¡Error!','Favor de llenar el campo.')
         else:
@@ -94,6 +98,7 @@ class Empleado():
                 self.borrarAlterno(nombre,apellidoP,apellidoM)
 
     def modificarEmpleado(self, idEmpleado, nombre, apellidoP, apellidoM, estado, db):
+        #Verifica que los campos esten llenos y modifica
         if (not nombre.get()) or (not apellidoP.get()) or (not apellidoM.get()):
             mensaje = messagebox.showerror('¡Error!','Favor de llenar los campos')
         else:

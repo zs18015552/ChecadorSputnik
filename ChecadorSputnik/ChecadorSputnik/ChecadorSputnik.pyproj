@@ -25,6 +25,9 @@
     <Compile Include="Asistencia.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Empresa.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Empleado.py">
       <SubType>Code</SubType>
     </Compile>
@@ -34,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="iconos\down-arrow.png" />
+    <Content Include="iconos\edificio-de-oficinas.png" />
     <Content Include="iconos\file.png" />
     <Content Include="iconos\home.png" />
     <Content Include="iconos\persona.png" />
