@@ -27,7 +27,7 @@ class Asistencia():
             labelNombreEmpleado.config(text=nombreEmpleado, fg='black')
             labelNombreEmpleado.update_idletasks()
 
-            #Consulta todas las asistencias dle día y determina si el nuevo registro es Entrada o Salida
+            #Consulta todas las asistencias del día y determina si el nuevo registro es Entrada o Salida
             query='SELECT idEmpleado from Asistencia WHERE DATE(fechaHora) = CURDATE() AND idEmpleado = {}'.format(idEmpleado.get())
             comandos.execute(query)
             resultados = comandos.fetchall()

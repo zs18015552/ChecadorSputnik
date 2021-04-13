@@ -4,7 +4,6 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 from time import *
-import threading
 from Asistencia import *
 from Empleado import *
 from Empresa import *
@@ -236,6 +235,7 @@ def mostrarConsultarEmpresa():
     
     empresa = Empresa()
 
+    #Consulta datos de la empresa
     rfc,nombreEmpresa,direccion,telefono,email = empresa.consultarEmpresa(db)
 
     nombreModulo.config(text="Consultar Empresa")
@@ -301,7 +301,7 @@ except Exception as e:
 
 #Elementos principales de la GUI    
 ventanaPrincipal = Tk()
-ventanaPrincipal.title("Checador")
+ventanaPrincipal.title("Checador Sputnik")
 ventanaAncho = ventanaPrincipal.winfo_reqwidth()
 ventanaLargo = ventanaPrincipal.winfo_reqheight()
 posicionDerecha = int(ventanaPrincipal.winfo_screenwidth()/2 - ventanaAncho/0.4)
