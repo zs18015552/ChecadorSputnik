@@ -2,15 +2,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>523cbd9c-ab7a-4daf-a3a2-55ad15b7c1de</ProjectGuid>
+    <ProjectGuid>a9fd2313-00ea-4e77-bbd0-eadc10577687</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>ChecadorSputnik.py</StartupFile>
+    <StartupFile>GestionSputnik.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
-    <Name>ChecadorSputnik</Name>
-    <RootNamespace>ChecadorSputnik</RootNamespace>
+    <Name>GestionSputnik</Name>
+    <RootNamespace>GestionSputnik</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,19 +21,29 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ChecadorSputnik.py" />
-    <Compile Include="Asistencia.py">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Administrador.py" />
+    <Compile Include="DiaExcepcion.py" />
+    <Compile Include="DiaFestivo.py" />
+    <Compile Include="Empleado.py" />
+    <Compile Include="Empresa.py" />
+    <Compile Include="GestionSputnik.py" />
+    <Compile Include="Horario.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="iconos\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="iconos\agregar.png" />
+    <Content Include="iconos\consultar.png" />
     <Content Include="iconos\down-arrow.png" />
     <Content Include="iconos\edificio-de-oficinas.png" />
+    <Content Include="iconos\eliminar.png" />
+    <Content Include="iconos\empleados.png" />
+    <Content Include="iconos\empresa.png" />
     <Content Include="iconos\file.png" />
     <Content Include="iconos\home.png" />
+    <Content Include="iconos\horario.png" />
+    <Content Include="iconos\modificar.png" />
     <Content Include="iconos\persona.png" />
     <Content Include="iconos\search.png" />
     <Content Include="iconos\up-arrow.png" />
