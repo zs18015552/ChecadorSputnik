@@ -12,19 +12,13 @@ from Empresa import *
 from tkcalendar import Calendar
 
 def cerrarSesion():
-  for widget in contenedorFrames.winfo_children():
-        widget.destroy()
+    mensaje = messagebox.askquestion('Cerrar sesión','¿Desea cerrar sesión?')
 
-  mostrarIniciarSesion()
+    if mensaje == 'yes':
+        for widget in contenedorFrames.winfo_children():
+            widget.destroy()
 
-def acceder(user, passw):
-  admin = Administrador()
-  if admin.iniciarSesion(user.get(), passw.get(), db):
-    for boton in contenedorBotones.winfo_children():
-        boton.config(state="normal")
-
-  else:
-    mensaje = messagebox.showerror('¡Error!','Usuario y/o contraseña inválidas.')
+        mostrarIniciarSesion()
 
 def mostrarMenuEmpleado():
     for widget in contenedorFrames.winfo_children():
@@ -140,16 +134,16 @@ def mostrarIniciarSesion():
   textoAdmin = Entry(frameLogin, bd=5, textvariable=nombreAdmin, font=('Verdana',20))
   textoAdmin.grid(row=2, column=1, padx=5, pady=30)
 
+  admin = Administrador()
+
   labelPassword = Label(frameLogin, text="Contraseña:", font=('Verdana',20), bg='white')
   labelPassword.grid(row=3, column=0, pady=30, padx=30, sticky=E)
   passwordVar= StringVar()
   textoPassword = Entry(frameLogin, bd=5, textvariable=passwordVar, font=('Verdana',20), show='*')
   textoPassword.grid(row=3, column=1, padx=5, pady=30)
-  textoPassword.bind("<Return>", lambda x: acceder(textoAdmin,textoPassword))
+  textoPassword.bind("<Return>", lambda x: admin.iniciarSesion(textoAdmin,textoPassword, botonIniciarSesion, contenedorBotones, db))
 
-  admin = Administrador()
-
-  botonIniciarSesion = Button(frameLogin, text="Iniciar Sesión", font=('Verdana',20), command=lambda: acceder(textoAdmin,textoPassword)) 
+  botonIniciarSesion = Button(frameLogin, text="Iniciar Sesión", font=('Verdana',20), command=lambda: admin.iniciarSesion(textoAdmin,textoPassword, botonIniciarSesion, contenedorBotones, db)) 
   botonIniciarSesion.grid(row=6, column=0, columnspan=2, padx=300, pady=70, sticky=W)
 
 def mostrarAltaEmpleados():
@@ -690,8 +684,6 @@ posicionAbajo = int(ventanaPrincipal.winfo_screenheight()/2 - ventanaLargo/0.45)
 ventanaPrincipal.geometry("1000x800+{}+{}".format(posicionDerecha, posicionAbajo))
 ventanaPrincipal.resizable(0,0)
 
-archivofoto = PhotoImage(file = "iconos/persona.png")
-
 contenedorBotones = Frame(ventanaPrincipal, width=100, height=800, bg='white')
 contenedorBotones.grid(row=0, column=0, rowspan=5, pady=20, padx=10)
 
@@ -702,7 +694,7 @@ contenedorFrames = Frame(ventanaPrincipal, width=900, height=800, bg='white')
 contenedorFrames.grid(row=1, column=1, rowspan=4, columnspan=2)
 
 iconoReporte = PhotoImage(file = "iconos/file.png").subsample(7,7)
-iconoEmpresa = PhotoImage(file = "iconos/edificio-de-oficinas.png").subsample(7,7)
+iconoEmpresa = PhotoImage(file = "iconos/empresa.png").subsample(7,7)
 iconoEmpleado = PhotoImage(file = "iconos/empleados.png").subsample(7,7)
 iconoHorario = PhotoImage(file = "iconos/horario.png").subsample(7,7)
 iconoFestivo = PhotoImage(file = "iconos/festivo.png").subsample(7,7)
