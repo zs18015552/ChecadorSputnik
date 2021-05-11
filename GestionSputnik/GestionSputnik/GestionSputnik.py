@@ -11,6 +11,11 @@ from Empleado import *
 from Empresa import *
 from tkcalendar import Calendar
 
+def validarEntrada(caracter,cadena):
+    if len(cadena) > 10:
+        return False
+    return caracter.isdecimal()
+
 def cerrarSesion():
     mensaje = messagebox.askquestion('Cerrar sesión','¿Desea cerrar sesión?')
 
@@ -55,16 +60,19 @@ def mostrarMenuHorario():
     frameMenuHorario.grid_propagate(False)
 
     labelVacio = Label(frameMenuHorario, text="", font=('Verdana',20), bg='white')
-    labelVacio.grid(row=0, column=0, pady=70, padx=10, sticky=E)
+    labelVacio.grid(row=0, column=0, pady=80, padx=50, sticky=E)
+
+    labelVacio2 = Label(frameMenuHorario, text="", font=('Verdana',20), bg='white')
+    labelVacio2.grid(row=1, column=0, padx=85, sticky=E)
 
     botonAgregar = Button(frameMenuHorario, text = "Registrar Horario", image = iconoAgregar, bg='white', relief='flat', command=mostrarRegistrarHorarios)
-    botonAgregar.grid(row=1, column=1, pady=20, padx=40)
+    botonAgregar.grid(row=1, column=2, pady=20, padx=40)
     labelAgregar = Label(frameMenuHorario, text="Registrar Horario", font=('Verdana',14), bg='white')
-    labelAgregar.grid(row=2, column=1)
+    labelAgregar.grid(row=2, column=2)
     botonEliminar = Button(frameMenuHorario, text = "Consultar Horario", image = iconoConsultar, bg='white', relief='flat', command=mostrarConsultarHorarios)
-    botonEliminar.grid(row=1, column=2, pady=20, padx=40)
+    botonEliminar.grid(row=1, column=3, pady=20, padx=40)
     labelEliminar = Label(frameMenuHorario, text="Consultar Horario", font=('Verdana',14), bg='white')
-    labelEliminar.grid(row=2, column=2)
+    labelEliminar.grid(row=2, column=3)
 
 def mostrarMenuDiaFestivo():
     for widget in contenedorFrames.winfo_children():
@@ -292,7 +300,7 @@ def mostrarRegistrarEmpresa():
   respuesta = comandos.fetchone()
   nombreModulo.config(text="Registrar Empresa")
 
-  if respuesta:
+  if not respuesta:
     mensaje = messagebox.showerror('¡Error!','Ya hay una empresa registrada.')
   else:
     empresa = Empresa()
@@ -321,8 +329,8 @@ def mostrarRegistrarEmpresa():
 
     labelTelefono = Label(frameRegistrarEmpresa, text="Teléfono:", font=('Verdana',20), bg='white')
     labelTelefono.grid(row=4,column=0, pady=30, sticky=E)
-    telefonoVar= StringVar()
-    textoTelefono = Entry(frameRegistrarEmpresa, bd=5, textvariable=telefonoVar, font=('Verdana',20))
+    textoTelefono = Entry(frameRegistrarEmpresa, bd=5, validate='key', font=('Verdana',20))
+    textoTelefono['validatecommand'] = (textoTelefono.register(validarEntrada),'%S','%P')
     textoTelefono.grid(row=4, column=1, padx=5, pady=30)
 
     labelEmail = Label(frameRegistrarEmpresa, text="E-mail:", font=('Verdana',20), bg='white')
@@ -415,11 +423,12 @@ def mostrarRegistrarDiaExcepcion():
   frameRegistrarDiaExcepcion.grid(row=1, column=0, columnspan=2)
   frameRegistrarDiaExcepcion.grid_propagate(False)
 
+  diaExcepcion = DiaExcepcion()
   empleado = Empleado()
   valores = empleado.listar(db)
 
   labelEmpleados = Label(frameRegistrarDiaExcepcion, text="Empleado:", font=('Verdana',20), bg='white')
-  labelEmpleados.grid(row=1, column=1, pady=40)
+  labelEmpleados.grid(row=1, column=1, pady=40, padx=20)
 
   comboEmpleados = ttk.Combobox(frameRegistrarDiaExcepcion, values= valores, state="readonly", width=40, font=('Verdana',18))
   comboEmpleados.grid(row=1, column=2)
@@ -443,10 +452,10 @@ def mostrarConsultarDiasFestivo():
   frameConsultarDiasFestivo.grid(row=1, column=0, columnspan=2)
   frameConsultarDiasFestivo.grid_propagate(False)
 
-  tablaDiasFestivos= ttk.Treeview(frameConsultarDiasFestivo, height=5)
+  tablaDiasFestivos= ttk.Treeview(frameConsultarDiasFestivo, height=25)
   tablaDiasFestivos["columns"] = ['0', '1']
   tablaDiasFestivos['show'] = 'headings'
-  tablaDiasFestivos.grid(row=0, column=0, padx=175, pady=10)
+  tablaDiasFestivos.grid(row=0, column=0, padx=175, pady=50)
   tablaDiasFestivos.column('0', anchor="center")
   tablaDiasFestivos.column('1', width=300, anchor="center")
   tablaDiasFestivos.heading('0', text="Registro", anchor="center")
@@ -467,21 +476,22 @@ def mostrarConsultarDiasExcepcion():
   frameConsultarDiasExcepcion.grid(row=1, column=0, columnspan=2)
   frameConsultarDiasExcepcion.grid_propagate(False)
   
+  diaExcepcion = DiaExcepcion()
   empleado = Empleado()
   valores = empleado.listar(db)
 
   labelEmpleados = Label(frameConsultarDiasExcepcion, text="Empleado:", font=('Verdana',20), bg='white')
-  labelEmpleados.grid(row=1, column=0, pady=40)
+  labelEmpleados.grid(row=1, column=0, pady=40, padx=20)
 
   comboEmpleados = ttk.Combobox(frameConsultarDiasExcepcion, values= valores, state="readonly", width=40, font=('Verdana',18))
   comboEmpleados.grid(row=1, column=1)
   comboEmpleados.bind("<<ComboboxSelected>>", lambda x: diaExcepcion.listarDiasExcepcion(tablaDiasExcepcion, comboEmpleados, db))
   comboEmpleados.current(0)
 
-  tablaDiasExcepcion= ttk.Treeview(frameConsultarDiasExcepcion, height=5)
+  tablaDiasExcepcion= ttk.Treeview(frameConsultarDiasExcepcion, height=20)
   tablaDiasExcepcion["columns"] = ['0', '1']
   tablaDiasExcepcion['show'] = 'headings'
-  tablaDiasExcepcion.grid(row=2, column=0, columnspan=2,padx=10, pady=10)
+  tablaDiasExcepcion.grid(row=2, column=0, columnspan=2,padx=100, pady=10)
   tablaDiasExcepcion.column('0', anchor="center")
   tablaDiasExcepcion.column('1', width=300, anchor="center")
   tablaDiasExcepcion.heading('0', text="Registro", anchor="center")
@@ -496,10 +506,10 @@ def mostrarEliminarDiaFestivo():
   frameEliminarDiaFestivo.grid(row=1, column=0, columnspan=2)
   frameEliminarDiaFestivo.grid_propagate(False)
 
-  tablaDiasFestivo= ttk.Treeview(frameEliminarDiaFestivo, height=5)
+  tablaDiasFestivo= ttk.Treeview(frameEliminarDiaFestivo, height=25)
   tablaDiasFestivo["columns"] = ['0', '1']
   tablaDiasFestivo['show'] = 'headings'
-  tablaDiasFestivo.grid(row=0, column=0, padx=175, pady=10)
+  tablaDiasFestivo.grid(row=0, column=0, padx=175, pady=50)
   tablaDiasFestivo.column('0', anchor="center")
   tablaDiasFestivo.column('1', width=300, anchor="center")
   tablaDiasFestivo.heading('0', text="Registro", anchor="center")
@@ -523,28 +533,29 @@ def mostrarEliminarDiaExcepcion():
   frameEliminarDiaExcepcion.grid(row=1, column=0, columnspan=2)
   frameEliminarDiaExcepcion.grid_propagate(False)
   
+  diaExcepcion = DiaExcepcion()
   empleado = Empleado()
   valores = empleado.listar(db)
 
   labelEmpleados = Label(frameEliminarDiaExcepcion, text="Empleado:", font=('Verdana',20), bg='white')
-  labelEmpleados.grid(row=1, column=0, pady=40)
+  labelEmpleados.grid(row=1, column=0, pady=40, padx=20)
 
   comboEmpleados = ttk.Combobox(frameEliminarDiaExcepcion, values= valores, state="readonly", width=40, font=('Verdana',18))
   comboEmpleados.grid(row=1, column=1)
   comboEmpleados.bind("<<ComboboxSelected>>", lambda x: diaExcepcion.listarDiasExcepcion(tablaDiasExcepcion, comboEmpleados, db))
   comboEmpleados.current(0)
 
-  tablaDiasExcepcion= ttk.Treeview(frameEliminarDiaExcepcion, height=5)
+  tablaDiasExcepcion= ttk.Treeview(frameEliminarDiaExcepcion, height=20)
   tablaDiasExcepcion["columns"] = ['0', '1']
   tablaDiasExcepcion['show'] = 'headings'
-  tablaDiasExcepcion.grid(row=2, column=0, columnspan=2,padx=10, pady=10)
+  tablaDiasExcepcion.grid(row=2, column=0, columnspan=2,padx=100, pady=10)
   tablaDiasExcepcion.column('0', anchor="center")
   tablaDiasExcepcion.column('1', width=300, anchor="center")
   tablaDiasExcepcion.heading('0', text="Registro", anchor="center")
   tablaDiasExcepcion.heading('1', text="Fecha", anchor="center")
 
   botonEliminarDiaFestivo = Button(frameEliminarDiaExcepcion, text="Eliminar día", font=('Verdana',20), command=lambda: diaExcepcion.eliminarDiaExcepcion(comboEmpleados,tablaDiasExcepcion,db)) 
-  botonEliminarDiaFestivo.grid(row=3, column=0, columnspan=2, padx=300, pady=70)
+  botonEliminarDiaFestivo.grid(row=3, column=0, columnspan=2, padx=300, pady=30)
 
 def mostrarRegistrarHorarios():
   for widget in contenedorFrames.winfo_children():
@@ -563,7 +574,6 @@ def mostrarRegistrarHorarios():
 
   comboEmpleados = ttk.Combobox(frameRegistrarHorario, values= valores, state="readonly", width=40, font=('Verdana',16))
   comboEmpleados.grid(row=1, column=1,columnspan=2)
-  comboEmpleados.bind("<<ComboboxSelected>>", lambda x: diaExcepcion.listarDiasExcepcion(tablaHorario, comboEmpleados, db))
   comboEmpleados.current(0)
 
   labelDia = Label(frameRegistrarHorario, text="Dia:", font=('Verdana',18), bg='white')
@@ -635,18 +645,18 @@ def mostrarConsultarHorarios():
   empleado = Empleado()
   valores = empleado.listar(db)
 
-  labelEmpleados = Label(frameConsultarHorario, text="Empleado:", font=('Verdana',20), bg='white')
-  labelEmpleados.grid(row=1, column=0, pady=40)
+  labelEmpleados = Label(frameConsultarHorario, text="Empleado:", font=('Verdana',18), bg='white')
+  labelEmpleados.grid(row=1, column=0, pady=40, padx=10)
 
   comboEmpleados = ttk.Combobox(frameConsultarHorario, values= valores, state="readonly", width=40, font=('Verdana',18))
   comboEmpleados.grid(row=1, column=1,columnspan=2)
   comboEmpleados.bind("<<ComboboxSelected>>", lambda x: horario.listarHorario( comboEmpleados, tablaHorario, db))
   comboEmpleados.current(0)
 
-  tablaHorario= ttk.Treeview(frameConsultarHorario, height=5)
+  tablaHorario= ttk.Treeview(frameConsultarHorario, height=20)
   tablaHorario["columns"] = ['0', '1', '2']
   tablaHorario['show'] = 'headings'
-  tablaHorario.grid(row=2, column=0, columnspan=2,padx=10, pady=10)
+  tablaHorario.grid(row=2, column=0, columnspan=2,padx=120, pady=10)
   tablaHorario.column('0', anchor="center")
   tablaHorario.column('1', anchor="center")
   tablaHorario.column('2', anchor="center")
@@ -713,7 +723,7 @@ botonDiaF = Button(contenedorBotones, text = "Día Festivo", image = iconoFestiv
 botonDiaF.grid(row=2, column=0, padx=10, pady=12)
 botonDiaE = Button(contenedorBotones, text = "Dia Excepción", image = iconoExcepcion, bg='white', relief='flat', command=mostrarMenuDiaExcepcion)
 botonDiaE.grid(row=3, column=0, padx=10, pady=12)
-botonEmpresa = Button(contenedorBotones, text = "Reporte", image = iconoEmpresa, bg='white', relief='flat', command=mostrarConsultarEmpresa)
+botonEmpresa = Button(contenedorBotones, text = "Reporte", image = iconoEmpresa, bg='white', relief='flat', command=mostrarRegistrarEmpresa)
 botonEmpresa.grid(row=4, column=0, padx=10, pady=12)
 botonReporte = Button(contenedorBotones, text = "Empresa", image = iconoReporte, bg='white', relief='flat')
 botonReporte.grid(row=5, column=0, padx=10, pady=12)

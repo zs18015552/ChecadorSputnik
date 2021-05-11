@@ -6,6 +6,11 @@ from tkinter import messagebox
 from time import *
 from Asistencia import *
 
+def validarEntrada(caracter,cadena):
+    if len(cadena) > 7:
+        return False
+    return caracter.isdecimal()
+
 def reloj():
     hora = strftime('%H:%M:%S %p')
     labelReloj.config(text = hora)
@@ -23,7 +28,7 @@ def mostrarFrameChecador():
     nombreModulo.config(text="Checador")
     canvasFotoEmpleado = Canvas(frameChecador, width=256, height=260, bg='white')
     canvasFotoEmpleado.grid(row=0,column=0, padx=350, pady=40)
-    fotoEmpleado = canvasFotoEmpleado.create_image(150, 132, image=archivofoto)
+    fotoEmpleado = canvasFotoEmpleado.create_image(130, 130, image=archivofoto)
     
     labelNombreEmpleado = Label(frameChecador, text="<<Nombre>>", font=('Verdana',24), bg='white', fg='gray')
     labelNombreEmpleado.grid(row=1, column=0, columnspan=2)
@@ -34,8 +39,8 @@ def mostrarFrameChecador():
     labelIdEmpleado = Label(frameChecador, text="ID Empleado", font=('Verdana',24), bg='white')
     labelIdEmpleado.grid(row=3, column=0, columnspan=2)
 
-    idvar = StringVar()
-    textoIdEmpleado = Entry(frameChecador, bd=5, textvariable=idvar, font=('Verdana',24), show='*')
+    textoIdEmpleado = Entry(frameChecador, bd=5, validate='key', font=('Verdana',24), show='*')
+    textoIdEmpleado['validatecommand'] = (textoIdEmpleado.register(validarEntrada),'%S','%P')
     textoIdEmpleado.grid(row=4, column=0, columnspan=2)
     textoIdEmpleado.bind('<Return>', lambda x: asistencia.insertarAsistencia(textoIdEmpleado, labelNombreEmpleado, db))
 
@@ -71,7 +76,7 @@ ventanaPrincipal.geometry("1000x800+{}+{}".format(posicionDerecha, posicionAbajo
 ventanaPrincipal.resizable(0,0)
 
 asistencia = Asistencia()
-archivofoto = PhotoImage(file = "iconos/persona.png")
+archivofoto = PhotoImage(file = "iconos/employee.png").subsample(2,2)
 
 nombreModulo = Label(ventanaPrincipal, text="Checador", font=('Verdana',16), bg='white')
 nombreModulo.grid(row=0,column=1, sticky='W', pady=5, padx=15)

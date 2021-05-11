@@ -65,6 +65,8 @@ class Horario():
             comandos.execute(query)
             dias = comandos.fetchall()
 
+            tabla.delete(*tabla.get_children())
+
             for dia in dias:
                 tabla.insert('', "end", text=dia[0], values=(dia[0],str(dia[1]), str(dia[2])))
 

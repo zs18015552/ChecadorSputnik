@@ -14,13 +14,18 @@ class DiaFestivo():
             if mensaje=='yes':
                 try:
                     comandos = db.cursor()
-
-                    query = 'INSERT INTO DiaFestivo (fecha) VALUES ("{}");'.format(calendario.selection_get())
+                    query = 'SELECT fecha FROM DiaFestivo WHERE fecha="{}"'.format(calendario.selection_get())
                     comandos.execute(query)
+                    repetido = comandos.fetchone()
 
-                    mensaje = messagebox.showinfo('Registro Día Festivo','Día registrado con éxito.')
-
-                    calendario.selection_set(date.today())
+                    if not repetido:
+                        query = 'INSERT INTO DiaFestivo (fecha) VALUES ("{}");'.format(calendario.selection_get())
+                        comandos.execute(query)
+                        mensaje = messagebox.showinfo('Registro Día Festivo','Día registrado con éxito.')
+                        calendario.selection_set(date.today())
+                    
+                    else:
+                        message = messagebox.showerror('Registro Día Festivo','Día repetido.')
 
                 except Exception as e:
                     print(e)

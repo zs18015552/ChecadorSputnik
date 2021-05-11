@@ -18,12 +18,20 @@ class DiaExcepcion():
                 try:
                     comandos = db.cursor()
 
-                    query = 'INSERT INTO DiaExcepcion (idEmpleado,fecha) VALUES ("{}","{}");'.format(idEmpleado, calendario.selection_get())
+                    query = 'SELECT fecha FROM DiaExcepcion WHERE fecha="{}" AND idEmpleado="{}"'.format(calendario.selection_get(), idEmpleado)
                     comandos.execute(query)
-                    mensaje = messagebox.showinfo('Registrar Día Excepcion','Día registrado con éxito.')
+                    repetido = comandos.fetchone()
 
-                    empleado.current(0)
-                    calendario.selection_set(date.today())
+                    if not repetido:
+                        query = 'INSERT INTO DiaExcepcion (idEmpleado,fecha) VALUES ("{}","{}");'.format(idEmpleado, calendario.selection_get())
+                        comandos.execute(query)
+                        mensaje = messagebox.showinfo('Registrar Día Excepcion','Día registrado con éxito.')
+
+                        empleado.current(0)
+                        calendario.selection_set(date.today())
+                    else:
+                        message = messagebox.showerror('Registro Día Excepción','Día repetido.')
+
                 except Exception as e:
                     mensaje = messagebox.showerror('Registrar Día Excepcion','Día registrado sin éxito.')
 
@@ -52,6 +60,8 @@ class DiaExcepcion():
             query='SELECT idExcepcion, dayname(fecha), day(fecha), monthname(fecha), year(fecha) FROM DiaExcepcion WHERE idEmpleado={} AND estado=1'.format(id)
             comandos.execute(query)
             dias = comandos.fetchall()
+
+            tabla.delete(*tabla.get_children())
 
             for dia in dias:
                 tabla.insert('', "end", text=dia[0], values=(dia[0],"{} {} de {} de {}".format(dia[1], str(dia[2]), dia[3], str(dia[4]))))
