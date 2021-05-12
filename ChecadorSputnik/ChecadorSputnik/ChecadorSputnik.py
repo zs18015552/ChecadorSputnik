@@ -76,7 +76,7 @@ ventanaPrincipal.geometry("1000x800+{}+{}".format(posicionDerecha, posicionAbajo
 ventanaPrincipal.resizable(0,0)
 
 asistencia = Asistencia()
-archivofoto = PhotoImage(file = "iconos/employee.png").subsample(2,2)
+archivofoto = PhotoImage(file = ".iconos/employee.png").subsample(2,2)
 
 nombreModulo = Label(ventanaPrincipal, text="Checador", font=('Verdana',16), bg='white')
 nombreModulo.grid(row=0,column=1, sticky='W', pady=5, padx=15)
