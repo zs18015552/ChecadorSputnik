@@ -509,14 +509,14 @@ def mostrarEliminarDiaFestivo():
   tablaDiasFestivo= ttk.Treeview(frameEliminarDiaFestivo, height=25)
   tablaDiasFestivo["columns"] = ['0', '1']
   tablaDiasFestivo['show'] = 'headings'
-  tablaDiasFestivo.grid(row=0, column=0, padx=175, pady=50)
+  tablaDiasFestivo.grid(row=0, column=0, padx=175, pady=40)
   tablaDiasFestivo.column('0', anchor="center")
   tablaDiasFestivo.column('1', width=300, anchor="center")
   tablaDiasFestivo.heading('0', text="Registro", anchor="center")
   tablaDiasFestivo.heading('1', text="Fecha", anchor="center")
 
   botonEliminarDiaFestivo = Button(frameEliminarDiaFestivo, text="Eliminar día", font=('Verdana',20), command=lambda: diaFestivo.eliminarDiaFestivo(tablaDiasFestivo,db)) 
-  botonEliminarDiaFestivo.grid(row=1, column=0, padx=300, pady=70)
+  botonEliminarDiaFestivo.grid(row=1, column=0, padx=300)
 
   diaFestivo = DiaFestivo()
   dias = diaFestivo.listarDiasFestivos(db)
