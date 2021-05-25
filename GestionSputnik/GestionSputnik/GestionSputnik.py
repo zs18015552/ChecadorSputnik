@@ -1,8 +1,9 @@
 from sshtunnel import SSHTunnelForwarder
-import mysql.connector as mysql
+import mysql.connector
 from tkinter import *
 from time import *
-from tkinter import ttk
+from tkinter import ttk 
+from tkinter import messagebox
 from Administrador import *
 from DiaFestivo import *
 from DiaExcepcion import *
@@ -62,17 +63,18 @@ def mostrarMenuHorario():
     labelVacio = Label(frameMenuHorario, text="", font=('Verdana',20), bg='white')
     labelVacio.grid(row=0, column=0, pady=80, padx=50, sticky=E)
 
-    labelVacio2 = Label(frameMenuHorario, text="", font=('Verdana',20), bg='white')
-    labelVacio2.grid(row=1, column=0, padx=85, sticky=E)
-
     botonAgregar = Button(frameMenuHorario, text = "Registrar Horario", image = iconoAgregar, bg='white', relief='flat', command=mostrarRegistrarHorarios)
-    botonAgregar.grid(row=1, column=2, pady=20, padx=40)
+    botonAgregar.grid(row=1, column=0, pady=20, padx=40)
     labelAgregar = Label(frameMenuHorario, text="Registrar Horario", font=('Verdana',14), bg='white')
-    labelAgregar.grid(row=2, column=2)
-    botonEliminar = Button(frameMenuHorario, text = "Consultar Horario", image = iconoConsultar, bg='white', relief='flat', command=mostrarConsultarHorarios)
-    botonEliminar.grid(row=1, column=3, pady=20, padx=40)
-    labelEliminar = Label(frameMenuHorario, text="Consultar Horario", font=('Verdana',14), bg='white')
-    labelEliminar.grid(row=2, column=3)
+    labelAgregar.grid(row=2, column=0)
+    botonEliminar = Button(frameMenuHorario, text = "Eliminar Horario", image = iconoEliminar, bg='white', relief='flat', command=mostrarEliminarHorarios)
+    botonEliminar.grid(row=1, column=1, pady=20, padx=40)
+    labelEliminar = Label(frameMenuHorario, text="Eliminar Horario", font=('Verdana',14), bg='white')
+    labelEliminar.grid(row=2, column=1)
+    botonConsultar = Button(frameMenuHorario, text = "Consultar Horario", image = iconoConsultar, bg='white', relief='flat', command=mostrarConsultarHorarios)
+    botonConsultar.grid(row=1, column=2, pady=20, padx=40)
+    labelConsultar = Label(frameMenuHorario, text="Consultar Horario", font=('Verdana',14), bg='white')
+    labelConsultar.grid(row=2, column=2)
 
 def mostrarMenuDiaFestivo():
     for widget in contenedorFrames.winfo_children():
@@ -136,7 +138,7 @@ def mostrarIniciarSesion():
   labelVacio = Label(frameLogin, text="", font=('Verdana',20), bg='white')
   labelVacio.grid(row=1, column=0, pady=30, sticky=E)
 
-  labelAdmin = Label(frameLogin, text="Usuario", font=('Verdana',20), bg='white')
+  labelAdmin = Label(frameLogin, text="Usuario:", font=('Verdana',20), bg='white')
   labelAdmin.grid(row=2, column=0, pady=30, padx=30, sticky=E)
   nombreAdmin= StringVar()
   textoAdmin = Entry(frameLogin, bd=5, textvariable=nombreAdmin, font=('Verdana',20))
@@ -152,7 +154,53 @@ def mostrarIniciarSesion():
   textoPassword.bind("<Return>", lambda x: admin.iniciarSesion(textoAdmin,textoPassword, botonIniciarSesion, contenedorBotones, db))
 
   botonIniciarSesion = Button(frameLogin, text="Iniciar Sesión", font=('Verdana',20), command=lambda: admin.iniciarSesion(textoAdmin,textoPassword, botonIniciarSesion, contenedorBotones, db)) 
-  botonIniciarSesion.grid(row=6, column=0, columnspan=2, padx=300, pady=70, sticky=W)
+  botonIniciarSesion.grid(row=6, column=0, padx=70, pady=70, sticky=W)
+  
+  botonContrasena = Button(frameLogin, text="Reestablecer Contraseña", font=('Verdana',20), command=mostrarReestablecerContraseña) 
+  botonContrasena.grid(row=6, column=1, padx=60,pady=70, sticky=W)
+
+def mostrarReestablecerContraseña():
+  admin = Administrador()
+  if admin.mandarCodigoVerificacion(db):
+    messagebox.showinfo('Reestablecer Contraseña','Se ha enviado al correo electrónico un codigo de verificación.')
+
+    for widget in contenedorFrames.winfo_children():
+      widget.destroy()
+
+    nombreModulo.config(text="Reestablecer contraseña")
+    frameLogin = Frame(contenedorFrames, width=850, height=700, bd=5, bg='white', relief='ridge')
+    frameLogin.grid(row=1, column=0, columnspan=2)
+    frameLogin.grid_propagate(False)
+
+    labelVacio = Label(frameLogin, text="", font=('Verdana',20), bg='white')
+    labelVacio.grid(row=1, column=0, pady=30, sticky=E)
+    
+    labelCodigo = Label(frameLogin, text="Código de verificación:", font=('Verdana',20), bg='white')
+    labelCodigo.grid(row=2, column=0, pady=30, padx=10, sticky=E)
+    codigo= StringVar()
+    textoCodigo = Entry(frameLogin, bd=5, textvariable=codigo, font=('Verdana',20))
+    textoCodigo.grid(row=2, column=1, pady=30)
+
+    labelPassword = Label(frameLogin, text="Contraseña nueva:", font=('Verdana',20), bg='white')
+    labelPassword.grid(row=3, column=0, pady=30, padx=10, sticky=E)
+    passwordVar= StringVar()
+    textoPassword = Entry(frameLogin, bd=5, textvariable=passwordVar, font=('Verdana',20), show='*')
+    textoPassword.grid(row=3, column=1, pady=30)
+  
+    labelPasswordV = Label(frameLogin, text="Verificar contraseña nueva:", font=('Verdana',20), bg='white')
+    labelPasswordV.grid(row=4, column=0, pady=30, padx=10, sticky=E)
+    passwordVVar= StringVar()
+    textoPasswordV = Entry(frameLogin, bd=5, textvariable=passwordVVar, font=('Verdana',20), show='*')
+    textoPasswordV.grid(row=4, column=1, pady=30)
+
+    botonCambiarContraseña = Button(frameLogin, text="Cambiar contraseña", font=('Verdana',20), command=lambda: admin.cambiarContrasena(textoCodigo, botonCambiarContraseña, textoPassword, textoPasswordV, db)) 
+    botonCambiarContraseña.grid(row=6, column=0, pady=80, padx=60)
+
+    botonRegresar = Button(frameLogin, text="Regresar", font=('Verdana',20), command=mostrarIniciarSesion) 
+    botonRegresar.grid(row=6, column=1, pady=70, sticky=E)
+  
+  else:
+    messagebox.showerror("¡Error!","No fue posible mandar el correo con código de verificación. Intente más tarde.")
 
 def mostrarAltaEmpleados():
   for widget in contenedorFrames.winfo_children():
@@ -301,7 +349,7 @@ def mostrarRegistrarEmpresa():
   nombreModulo.config(text="Registrar Empresa")
 
   if not respuesta:
-    mensaje = messagebox.showerror('¡Error!','Ya hay una empresa registrada.')
+    messagebox.showerror('¡Error!','Ya hay una empresa registrada.')
   else:
     empresa = Empresa()
     
@@ -465,7 +513,7 @@ def mostrarConsultarDiasFestivo():
   dias = diaFestivo.listarDiasFestivos(db)
 
   for dia in dias:
-      tablaDiasFestivos.insert('', "end", text=dia[0], values=(dia[0],"{} {} de {} de {}".format(dia[1], str(dia[2]), dia[3], str(dia[4]))))
+      tablaDiasFestivos.insert('', END, text=dia[0], values=(dia[0],"{} {} de {} de {}".format(dia[1], str(dia[2]), dia[3], str(dia[4]))))
 
 def mostrarConsultarDiasExcepcion():
   for widget in contenedorFrames.winfo_children():
@@ -522,7 +570,7 @@ def mostrarEliminarDiaFestivo():
   dias = diaFestivo.listarDiasFestivos(db)
 
   for dia in dias:
-      tablaDiasFestivo.insert('', "end", text=dia[0], values=(dia[0],"{} {} de {} de {}".format(dia[1], str(dia[2]), dia[3], str(dia[4]))))
+      tablaDiasFestivo.insert('', END, text=dia[0], values=(dia[0],"{} {} de {} de {}".format(dia[1], str(dia[2]), dia[3], str(dia[4]))))
 
 def mostrarEliminarDiaExcepcion():
   for widget in contenedorFrames.winfo_children():
@@ -664,6 +712,43 @@ def mostrarConsultarHorarios():
   tablaHorario.heading('1', text="Hora Entrada", anchor="center")
   tablaHorario.heading('2', text="Hora Salida", anchor="center")
 
+def mostrarEliminarHorarios():
+  for widget in contenedorFrames.winfo_children():
+    widget.destroy()
+
+  nombreModulo.config(text="Eliminar Horario")
+  frameEliminarHorario = Frame(contenedorFrames, width=850, height=700, bd=5, bg='white', relief='ridge')
+  frameEliminarHorario.grid(row=1, column=0, columnspan=2)
+  frameEliminarHorario.grid_propagate(False)
+  
+  horario = Horario()
+  empleado = Empleado()
+  valores = empleado.listar(db)
+
+  labelEmpleados = Label(frameEliminarHorario, text="Empleado:", font=('Verdana',18), bg='white')
+  labelEmpleados.grid(row=1, column=0, pady=40)
+
+  comboEmpleados = ttk.Combobox(frameEliminarHorario, values= valores, state="readonly", width=40, font=('Verdana',18))
+  comboEmpleados.grid(row=1, column=1)
+  comboEmpleados.bind("<<ComboboxSelected>>", lambda x: horario.listarHorario( comboEmpleados, tablaHorario, db))
+  comboEmpleados.current(0)
+
+  tablaHorario= ttk.Treeview(frameEliminarHorario, height=20)
+  tablaHorario["columns"] = ['0', '1', '2']
+  tablaHorario['show'] = 'headings'
+  tablaHorario.grid(row=2, column=0, columnspan=2,padx=120, pady=10)
+  tablaHorario.column('0', anchor="center")
+  tablaHorario.column('1', anchor="center")
+  tablaHorario.column('2', anchor="center")
+  tablaHorario.heading('0', text="Día", anchor="center")
+  tablaHorario.heading('1', text="Hora Entrada", anchor="center")
+  tablaHorario.heading('2', text="Hora Salida", anchor="center")
+
+  botonEliminarHorario = Button(frameEliminarHorario, text="Eliminar Horario", font=('Verdana',20), command=lambda: horario.eliminarHorario(comboEmpleados, tablaHorario, db)) 
+  botonEliminarHorario.grid(row=3, column=0, columnspan=2, padx=300, pady=20, sticky=W)
+
+
+
 #Conexión a la base de datos 
 server = SSHTunnelForwarder(("198.54.125.222", 21098),
                               ssh_host_key=None,
@@ -674,7 +759,7 @@ server = SSHTunnelForwarder(("198.54.125.222", 21098),
 server.start()
 
 try:
-    db=mysql.connect(user='axclzgpy_sputnik',
+    db=mysql.connector.connect(user='axclzgpy_sputnik',
                      password='jU0x3CV}Dv;c@wg67L',
                      host="127.0.0.1",
                      port=server.local_bind_port, 
@@ -682,8 +767,7 @@ try:
     print("Conexión exitosa.")
     
 except Exception as e:
-    print(e)
-    print("Conexión fallida")
+    messagebox.showerror("Conexión a la base de datos", "No se pudo conectar a la base de datos. " + str(e))
 
 ventanaPrincipal = Tk()
 ventanaPrincipal.title("Checador Sputnik")

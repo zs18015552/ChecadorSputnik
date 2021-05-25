@@ -42,7 +42,10 @@ def mostrarFrameChecador():
     textoIdEmpleado = Entry(frameChecador, bd=5, validate='key', font=('Verdana',24), show='*')
     textoIdEmpleado['validatecommand'] = (textoIdEmpleado.register(validarEntrada),'%S','%P')
     textoIdEmpleado.grid(row=4, column=0, columnspan=2)
-    textoIdEmpleado.bind('<Return>', lambda x: asistencia.insertarAsistencia(textoIdEmpleado, labelNombreEmpleado, db))
+    textoIdEmpleado.bind('<Return>', lambda x: asistencia.insertarAsistencia(textoIdEmpleado, labelNombreEmpleado, labelMensaje, db))
+
+    labelMensaje = Label(frameChecador, text="", font=('Verdana',24), bg='white')
+    labelMensaje.grid(row=5, column=0, columnspan=2, pady=10)
 
 #Conexión a la base de datos 
 server = SSHTunnelForwarder(("198.54.125.222", 21098),

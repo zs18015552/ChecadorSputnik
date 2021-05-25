@@ -1,12 +1,12 @@
 from tkinter import *
-from tkinter import messagebox
 from datetime import date
+from tkinter import messagebox
 
 class DiaFestivo():
 
     def registrarDiaFestivo(self, calendario, db):
         if not (calendario.selection_get()):
-            mensaje = messagebox.showerror('¡Error!','Favor de seleccionar una fecha.')
+            messagebox.showerror('¡Error!','Favor de seleccionar una fecha.')
         
         else:
             mensaje = messagebox.askquestion('Registar Dia Festivo','¿Estás seguro que la información es correcta?')
@@ -14,22 +14,21 @@ class DiaFestivo():
             if mensaje=='yes':
                 try:
                     comandos = db.cursor()
-                    query = 'SELECT fecha FROM DiaFestivo WHERE fecha="{}"'.format(calendario.selection_get())
+                    query = 'SELECT fecha FROM DiaFestivo WHERE fecha="{}" AND estado=1'.format(calendario.selection_get())
                     comandos.execute(query)
                     repetido = comandos.fetchone()
 
                     if not repetido:
                         query = 'INSERT INTO DiaFestivo (fecha) VALUES ("{}");'.format(calendario.selection_get())
                         comandos.execute(query)
-                        mensaje = messagebox.showinfo('Registro Día Festivo','Día registrado con éxito.')
+                        messagebox.showinfo('Registro Día Festivo','Día registrado con éxito.')
                         calendario.selection_set(date.today())
                     
                     else:
-                        message = messagebox.showerror('Registro Día Festivo','Día repetido.')
+                        messagebox.showerror('Registro Día Festivo','Día repetido.')
 
                 except Exception as e:
-                    print(e)
-                    mensaje = messagebox.showerror('Registro Día Festivo','Día registrado sin éxito.')
+                    messagebox.showerror('Registro Día Festivo','No se pudo registrar el día festivo. ' + str(e))
 
     def listarDiasFestivos(self, db):
         try:
@@ -41,12 +40,11 @@ class DiaFestivo():
             return dias
 
         except Exception as e:
-            print(e)
-            mensaje = messagebox.showerror('Día Excepcion','Error al acceder a la base de datos.')
+            messagebox.showerror('Día Excepcion','No se pudieron listar los días festivos. ' + str(e))
 
     def eliminarDiaFestivo(self,tabla,db):
         if not (tabla.selection()):
-            mensaje = messagebox.showerror('¡Error!','Favor de seleccionar un día a eliminar.')
+            messagebox.showerror('¡Error!','Favor de seleccionar un día a eliminar.')
         
         else:
             mensaje = messagebox.askquestion('Eliminar Dia Festivo','¿Estás seguro deseas proceder con la operación?')
@@ -71,10 +69,9 @@ class DiaFestivo():
                     tabla.delete(*tabla.get_children())
 
                     for dia in dias:
-                        tabla.insert('', "end", text=dia[0], values=(dia[0],"{} {} de {} de {}".format(dia[1], str(dia[2]), dia[3], str(dia[4]))))
+                        tabla.insert('', END, text=dia[0], values=(dia[0],"{} {} de {} de {}".format(dia[1], str(dia[2]), dia[3], str(dia[4]))))
 
                 except Exception as e:
-                    print(e)
-                    mensaje = messagebox.showerror('Eliminar Día Festivo','Día eliminado sin éxito.')
+                    messagebox.showerror('Eliminar Día Festivo','No se pudo eliminar el día festivo. '+ str(e))
 
       

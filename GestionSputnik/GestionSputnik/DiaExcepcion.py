@@ -6,7 +6,7 @@ class DiaExcepcion():
 
     def registrarDiaExcepcion(self, empleado, calendario, db):
 
-        idEmpleado = str(empleado.current() + 1000001)
+        idEmpleado = empleado.get()[0:7]
 
         if not (calendario.selection_get()):
             mensaje = messagebox.showerror('¡Error!','Favor de seleccionar una fecha.')
@@ -18,37 +18,22 @@ class DiaExcepcion():
                 try:
                     comandos = db.cursor()
 
-                    query = 'SELECT fecha FROM DiaExcepcion WHERE fecha="{}" AND idEmpleado="{}"'.format(calendario.selection_get(), idEmpleado)
+                    query = 'SELECT fecha FROM DiaExcepcion WHERE fecha="{}" AND idEmpleado="{}" AND estado=1'.format(calendario.selection_get(), idEmpleado)
                     comandos.execute(query)
                     repetido = comandos.fetchone()
 
                     if not repetido:
                         query = 'INSERT INTO DiaExcepcion (idEmpleado,fecha) VALUES ("{}","{}");'.format(idEmpleado, calendario.selection_get())
                         comandos.execute(query)
-                        mensaje = messagebox.showinfo('Registrar Día Excepcion','Día registrado con éxito.')
+                        messagebox.showinfo('Registrar Día Excepcion','Día registrado con éxito.')
 
                         empleado.current(0)
                         calendario.selection_set(date.today())
                     else:
-                        message = messagebox.showerror('Registro Día Excepción','Día repetido.')
+                        messagebox.showerror('Registro Día Excepción','Día repetido.')
 
                 except Exception as e:
-                    mensaje = messagebox.showerror('Registrar Día Excepcion','Día registrado sin éxito.')
-
-    def listar(self,db):
-        try:
-            comandos = db.cursor()
-            comandos.execute("SELECT idEmpleado, CONCAT_WS(' ',nombre,apellidoPaterno,apellidoMaterno) AS nombreCompleto FROM Empleados WHERE estado=1 ORDER BY IdEmpleado")
-            registros = comandos.fetchall()
-            valores = list()
-            for dia in registros:
-                valores.append(str(dia[0]) + "-" + dia[1])
-
-            return valores
-
-        except Exception as e:
-            print(e)
-            mensaje = messagebox.showerror('Día Excepcion','Error al acceder a la base de datos.')
+                    messagebox.showerror('Registrar Día Excepcion','No se pudo registrar el día de excepción del empleado.' + str(e))
 
     def listarDiasExcepcion(self, tabla, idEmpleado, db):
 
@@ -64,15 +49,14 @@ class DiaExcepcion():
             tabla.delete(*tabla.get_children())
 
             for dia in dias:
-                tabla.insert('', "end", text=dia[0], values=(dia[0],"{} {} de {} de {}".format(dia[1], str(dia[2]), dia[3], str(dia[4]))))
+                tabla.insert('', END, text=dia[0], values=(dia[0],"{} {} de {} de {}".format(dia[1], str(dia[2]), dia[3], str(dia[4]))))
 
         except Exception as e:
-            print(e)
-            mensaje = messagebox.showerror('Día Excepción','Error al acceder a la base de datos.')
+            messagebox.showerror('Día Excepción','No se pudo listar los días de excepción del empleado.' + str(e))
 
     def eliminarDiaExcepcion(self, combo, tabla, db):
         if not (tabla.selection()):
-            mensaje = messagebox.showerror('¡Error!','Favor de seleccionar un día a eliminar.')
+            messagebox.showerror('¡Error!','Favor de seleccionar un día a eliminar.')
         
         else:
             mensaje = messagebox.askquestion('Eliminar Dia Excepción','¿Estás seguro deseas proceder con la operación?')
@@ -100,8 +84,7 @@ class DiaExcepcion():
                     tabla.delete(*tabla.get_children())
 
                     for dia in dias:
-                        tabla.insert('', "end", text=dia[0], values=(dia[0],"{} {} de {} de {}".format(dia[1], str(dia[2]), dia[3], str(dia[4]))))
+                        tabla.insert('', END, text=dia[0], values=(dia[0],"{} {} de {} de {}".format(dia[1], str(dia[2]), dia[3], str(dia[4]))))
 
                 except Exception as e:
-                    print(e)
-                    mensaje = messagebox.showerror('Eliminar Día Excepción','Día eliminado sin éxito.')
+                    mensaje = messagebox.showerror('Eliminar Día Excepción','No se pudo eliminar el día de excepción del empleado.' + str(e))

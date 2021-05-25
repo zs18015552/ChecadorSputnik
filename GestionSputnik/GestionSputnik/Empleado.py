@@ -1,6 +1,5 @@
 from tkinter import *
 from tkinter import messagebox
-import mysql.connector as mysql
 
 class Empleado():
     def listar(self,db):
@@ -15,8 +14,7 @@ class Empleado():
             return valores
 
         except Exception as e:
-            print(e)
-            mensaje = messagebox.showerror('Día Excepcion','Error al acceder a la base de datos.')
+            messagebox.showerror('Día Excepcion','Error al obtener lista. ' + str(e))
 
     def consultarEmpleado(self, idEmpleado, nombre, apellidoP, apellidoM, db):
         #Consulta si el empleado existe
@@ -41,9 +39,9 @@ class Empleado():
                 apellidoM.config(state='disabled')
 
             else:
-                mensaje = messagebox.showerror('¡Error!','Empleado no encontrado.')
+                messagebox.showerror('¡Error!','Empleado no encontrado.')
         except Exception as e:
-            mensaje = messagebox.showerror('¡Error!','No se pudo acceder a la base de datos.')
+            messagebox.showerror('¡Error!','No se pudo obtener el empleado. ' + str(e))
 
     def consultarEmpleadoAlterno(self, idEmpleado, nombre, apellidoP, apellidoM, estado, db):
         try:
@@ -68,7 +66,7 @@ class Empleado():
             else:
                 mensaje = messagebox.showerror('¡Error!','Empleado no encontrado.')
         except Exception as e:
-            mensaje = messagebox.showerror('¡Error!','No se pudo acceder a la base de datos.')
+            mensaje = messagebox.showerror('¡Error!','No se pudo obtener el empleado. ' + str(e))
 
     def borrar(self, nombre, apellidoP, apellidoM):
         nombre.delete(0, END)
@@ -93,7 +91,7 @@ class Empleado():
     def altaEmpleado(self, idEmpleado, nombre,apellidoP, apellidoM, db):
         #Verifica que todos los campos este llenos
         if (not nombre.get()) or (not apellidoP.get()) or (not apellidoM.get()):
-            mensaje = messagebox.showerror('¡Error!','Favor de llenar todos los campos.')
+            messagebox.showerror('¡Error!','Favor de llenar todos los campos.')
         else:
             try:
                 comandos = db.cursor()
@@ -104,6 +102,7 @@ class Empleado():
                     query = 'INSERT INTO Empleados (nombre,apellidoPaterno,apellidoMaterno) VALUES ("{}","{}","{}")'.format(nombre.get(),apellidoP.get(),apellidoM.get())
                     comandos.execute(query)
                     db.commit()
+                    messagebox.showinfo("Alta Empleado","Empleado registrado con éxito.")
                     self.borrar(nombre,apellidoP,apellidoM)
                     idEmpleado.config(state='normal')
                     id = int(idEmpleado.get()) + 1
@@ -111,12 +110,12 @@ class Empleado():
                     idEmpleado.insert(0,id)
                     idEmpleado.config(state='disabled')
             except Exception as e:
-                mensaje = messagebox.showerror('¡Error!','No se pudo acceder a la base de datos.')
+                messagebox.showerror('¡Error!','No se pudo registrar al empleado. ' + str(e))
     
     def bajaEmpleado(self, idEmpleado, nombre, apellidoP, apellidoM, db):
         #Verifica que el campo de idEmpleado este lleno
         if (not idEmpleado.get()):
-            mensaje = messagebox.showerror('¡Error!','Favor de llenar el campo.')
+            messagebox.showerror('¡Error!','Favor de llenar el campo.')
         else:
             try:
                 comandos = db.cursor()
@@ -127,14 +126,15 @@ class Empleado():
                     query = 'UPDATE Empleados SET estado = 0 WHERE idEmpleado = {}'.format(idEmpleado.get())
                     comandos.execute(query)
                     db.commit()
+                    messagebox.showinfo("Baja Empleado","Empleado dado de baja con éxito.")
                     self.borrarAlterno(idEmpleado,nombre,apellidoP,apellidoM)
             except Exception as e:
-                mensaje = messagebox.showerror('¡Error!','No se pudo acceder a la base de datos.')
+                messagebox.showerror('¡Error!','No se pudo dar de baja al empleado. ' + str(e))
 
     def modificarEmpleado(self, idEmpleado, nombre, apellidoP, apellidoM, estado, db):
         #Verifica que los campos esten llenos y modifica
         if (not nombre.get()) or (not apellidoP.get()) or (not apellidoM.get()):
-            mensaje = messagebox.showerror('¡Error!','Favor de llenar los campos')
+            messagebox.showerror('¡Error!','Favor de llenar los campos')
         else:
             try:
                 comandos = db.cursor()
@@ -148,4 +148,4 @@ class Empleado():
                     self.borrarAlterno(idEmpleado,nombre,apellidoP,apellidoM)
                     estado.current(0)
             except Exception as e:
-                mensaje = messagebox.showerror('¡Error!','No se pudo acceder a la base de datos.')
+                messagebox.showerror('¡Error!','No se pudo modificar al empleado. ' + str(e))

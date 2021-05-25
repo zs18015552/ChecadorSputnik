@@ -1,4 +1,3 @@
-from tkinter import *
 from tkinter import messagebox
 
 class Empresa():
@@ -22,7 +21,7 @@ class Empresa():
                     email.config(state='disabled')
                     boton.config(state='disabled')
             except Exception as e:
-                mensaje = messagebox.showerror('¡Error!','Registro de Empleado sin éxito.')
+                mensaje = messagebox.showerror('¡Error!','No se pudo registrar la empresa. ' + str(e))
 
     def consultarEmpresa(self, db):
         try: 
@@ -31,4 +30,4 @@ class Empresa():
             resultado = comandos.fetchone()
             return resultado
         except Exception as e:
-            mensaje = messagebox.showerror('¡Error!','No se puede acceder a la base de datos.')
+            mensaje = messagebox.showerror('¡Error!','No se pudo consultar la información de la empresa.' + str(e))

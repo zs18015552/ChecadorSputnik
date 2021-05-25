@@ -13,14 +13,14 @@ class Horario():
                     bandera = False
 
             if bandera:
-                tabla.insert('', "end", text=comboDia.get(), values=(comboDia.get(),comboHoraInicio.get(),comboHoraFin.get()))
+                tabla.insert('', END, text=comboDia.get(), values=(comboDia.get(),comboHoraInicio.get(),comboHoraFin.get()))
 
         else:
-            message = messagebox.showerror('¡Error!','Horario inválido.')
+            messagebox.showerror('¡Error!','Horario inválido.')
 
     def eliminarTabla(self, tabla):
         if not (tabla.selection()):
-            mensaje = messagebox.showerror('¡Error!','Favor de seleccionar un día a eliminar.')
+            messagebox.showerror('¡Error!','Favor de seleccionar un día a eliminar.')
 
         else:
             tabla.delete(tabla.selection())
@@ -30,7 +30,7 @@ class Horario():
 
     def registrarHorario(self, comboEmpleado, comboDia, comboHoraInicio, comboHoraFin, tabla, db):
         if not (tabla.get_children()):
-            mensaje = messagebox.showerror('¡Error!','Tabla vacia.')
+            messagebox.showerror('¡Error!','Tabla vacia.')
         else:
             mensaje = messagebox.askquestion('Registar Horario','¿Estás seguro que la información es correcta?')
             if mensaje=='yes':
@@ -44,7 +44,7 @@ class Horario():
                     query='INSERT INTO Horarios (idEmpleado,dia,horaInicio,horaFin) VALUES (%s,%s,%s,%s)'
                     comandos.executemany(query,valores)
                     db.commit()
-                    mensaje = messagebox.showinfo('Registrar Horario','Registro de horario con éxito.')
+                    messagebox.showinfo('Registrar Horario','Registro de horario con éxito.')
 
                     tabla.delete(*tabla.get_children())
                     comboEmpleado.current(0)
@@ -53,7 +53,27 @@ class Horario():
                     comboHoraFin.current(0)
 
                 except Exception as e:
-                    mensaje = messagebox.showerror('¡Error!','Registro de horario sin éxito.')
+                    messagebox.showerror('¡Error!','No se pudo registrar el horario. ' + str(e))
+
+    def eliminarHorario(self,comboEmpleado, tabla,db):
+        mensaje = messagebox.askquestion('Eliminar Horario','¿Estás seguro deseas proceder con la operación?')
+
+        if mensaje=='yes':
+            id = comboEmpleado.get()[0:7]        
+
+            try:
+                comandos = db.cursor()
+
+                query = 'UPDATE Horarios SET estado = 0 WHERE idEmpleado ={}'.format(id)
+                comandos.execute(query)
+                db.commit()
+
+                messagebox.showinfo('Eliminar Horario','Horario eliminado con éxito.')
+
+                self.borrarTabla(tabla)
+
+            except Exception as e:
+                messagebox.showerror('Eliminar Horario','No se pudo eliminar el horario. ' + str(e))
 
     def listarHorario(self, comboEmpleados, tabla, db):
         id = comboEmpleados.get()[0:7]
@@ -68,10 +88,9 @@ class Horario():
             tabla.delete(*tabla.get_children())
 
             for dia in dias:
-                tabla.insert('', "end", text=dia[0], values=(dia[0],str(dia[1]), str(dia[2])))
+                tabla.insert('', END, text=dia[0], values=(dia[0],str(dia[1]), str(dia[2])))
 
         except Exception as e:
-            print(e)
             mensaje = messagebox.showerror('¡Error!','Error al acceder a la base de datos.')
 
 
