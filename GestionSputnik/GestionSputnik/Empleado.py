@@ -16,37 +16,12 @@ class Empleado():
         except Exception as e:
             messagebox.showerror('Día Excepcion','Error al obtener lista. ' + str(e))
 
-    def consultarEmpleado(self, idEmpleado, nombre, apellidoP, apellidoM, db):
-        #Consulta si el empleado existe
+    def consultarEmpleado(self, empleado, nombre, apellidoP, apellidoM, estado, db):        
+        idEmpleado = empleado.get()[0:7]
+        
         try:
             comandos = db.cursor()
-            query = "SELECT nombre, apellidoPaterno, apellidoMaterno from Empleados WHERE idEmpleado = {} AND estado = 1".format(idEmpleado.get())
-            comandos.execute(query)
-            resultado = comandos.fetchone()
-
-            if resultado:
-                nombre.config(state='normal')
-                apellidoP.config(state='normal')
-                apellidoM.config(state='normal')
-                nombre.delete(0,END)
-                apellidoP.delete(0,END)
-                apellidoM.delete(0,END)
-                nombre.insert(0,resultado[0])
-                apellidoP.insert(0,resultado[1])
-                apellidoM.insert(0,resultado[2])
-                nombre.config(state='disabled')
-                apellidoP.config(state='disabled')
-                apellidoM.config(state='disabled')
-
-            else:
-                messagebox.showerror('¡Error!','Empleado no encontrado.')
-        except Exception as e:
-            messagebox.showerror('¡Error!','No se pudo obtener el empleado. ' + str(e))
-
-    def consultarEmpleadoAlterno(self, idEmpleado, nombre, apellidoP, apellidoM, estado, db):
-        try:
-            comandos = db.cursor()
-            query = "SELECT nombre, apellidoPaterno, apellidoMaterno, estado FROM Empleados WHERE idEmpleado = {}".format(idEmpleado.get())
+            query = "SELECT nombre, apellidoPaterno, apellidoMaterno, estado FROM Empleados WHERE idEmpleado = {}".format(idEmpleado)
             comandos.execute(query)
             resultado = comandos.fetchone()
 
@@ -61,7 +36,6 @@ class Empleado():
                 apellidoP.insert(0,resultado[1])
                 apellidoM.insert(0,resultado[2])
                 estado.current((0 if resultado[3]==1 else 1))
-                idEmpleado.config(state='disabled')
 
             else:
                 mensaje = messagebox.showerror('¡Error!','Empleado no encontrado.')
@@ -73,20 +47,6 @@ class Empleado():
         apellidoP.delete(0, END)
         apellidoM.delete(0, END)
         nombre.focus()
-
-    def borrarAlterno(self, idEmpleado, nombre, apellidoP, apellidoM):
-        nombre.config(state='normal')
-        apellidoP.config(state='normal')
-        apellidoM.config(state='normal')
-        idEmpleado.config(state='normal')
-        nombre.delete(0, END)
-        apellidoP.delete(0, END)
-        apellidoM.delete(0, END)
-        idEmpleado.delete(0, END)
-        nombre.config(state='disabled')
-        apellidoP.config(state='disabled')
-        apellidoM.config(state='disabled')
-        idEmpleado.focus()
 
     def altaEmpleado(self, idEmpleado, nombre,apellidoP, apellidoM, db):
         #Verifica que todos los campos este llenos
@@ -111,41 +71,25 @@ class Empleado():
                     idEmpleado.config(state='disabled')
             except Exception as e:
                 messagebox.showerror('¡Error!','No se pudo registrar al empleado. ' + str(e))
-    
-    def bajaEmpleado(self, idEmpleado, nombre, apellidoP, apellidoM, db):
-        #Verifica que el campo de idEmpleado este lleno
-        if (not idEmpleado.get()):
-            messagebox.showerror('¡Error!','Favor de llenar el campo.')
-        else:
-            try:
-                comandos = db.cursor()
-        
-                mensaje = messagebox.askquestion('Baja Empleado','¿Estás seguro de continuar con la operación?')
-            
-                if mensaje == 'yes':
-                    query = 'UPDATE Empleados SET estado = 0 WHERE idEmpleado = {}'.format(idEmpleado.get())
-                    comandos.execute(query)
-                    db.commit()
-                    messagebox.showinfo("Baja Empleado","Empleado dado de baja con éxito.")
-                    self.borrarAlterno(idEmpleado,nombre,apellidoP,apellidoM)
-            except Exception as e:
-                messagebox.showerror('¡Error!','No se pudo dar de baja al empleado. ' + str(e))
 
-    def modificarEmpleado(self, idEmpleado, nombre, apellidoP, apellidoM, estado, db):
+    def modificarEmpleado(self, empleado, nombre, apellidoP, apellidoM, estado, db):
+        idEmpleado = empleado.get()[0:7]
         #Verifica que los campos esten llenos y modifica
         if (not nombre.get()) or (not apellidoP.get()) or (not apellidoM.get()):
             messagebox.showerror('¡Error!','Favor de llenar los campos')
         else:
-            try:
-                comandos = db.cursor()
-        
+            try:           
                 mensaje = messagebox.askquestion('Modificar Empleado','¿Estás seguro de continuar con la operación?')
             
                 if mensaje == 'yes':
-                    query = 'UPDATE Empleados SET nombre = "{}", apellidoPaterno = "{}", apellidoMaterno = "{}", estado ="{}"  WHERE idEmpleado = {}'.format(nombre.get(), apellidoP.get(), apellidoM.get(), 1 if estado.get()=='Activo' else 0, idEmpleado.get())
+                    comandos = db.cursor()
+                    query = 'UPDATE Empleados SET nombre = "{}", apellidoPaterno = "{}", apellidoMaterno = "{}", estado ="{}"  WHERE idEmpleado = {}'.format(nombre.get(), apellidoP.get(), apellidoM.get(), 1 if estado.get()=='Activo' else 0, idEmpleado)
                     comandos.execute(query)
                     db.commit()
-                    self.borrarAlterno(idEmpleado,nombre,apellidoP,apellidoM)
+                    self.borrar(nombre,apellidoP,apellidoM)
                     estado.current(0)
+                    valores = self.listar(db)
+                    empleado.config(values=valores)
+                    empleado.current(0)
             except Exception as e:
                 messagebox.showerror('¡Error!','No se pudo modificar al empleado. ' + str(e))

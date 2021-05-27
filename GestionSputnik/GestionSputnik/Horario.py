@@ -8,7 +8,7 @@ class Horario():
         if int(comboHoraInicio.get()[0:2])<int(comboHoraFin.get()[0:2]):
             bandera = True
             for linea in tabla.get_children():
-                if (tabla.item(linea,"values") == ((comboDia.get(),comboHoraInicio.get(),comboHoraFin.get()))) or ((tabla.item(linea,"values")[1])==comboHoraInicio.get()) or ((tabla.item(linea,"values")[2])==comboHoraFin.get()):
+                if (tabla.item(linea,"values") == ((comboDia.get(),comboHoraInicio.get(),comboHoraFin.get()))) or ((tabla.item(linea,"values")[0])==comboDia.get()):
                     message = messagebox.showerror('¡Error!','Horario repetido o inválido.')
                     bandera = False
 

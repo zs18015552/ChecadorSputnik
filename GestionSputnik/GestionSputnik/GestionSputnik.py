@@ -10,7 +10,8 @@ from DiaExcepcion import *
 from Horario import *
 from Empleado import *
 from Empresa import *
-from tkcalendar import Calendar
+from Reporte import *
+from tkcalendar import Calendar, DateEntry
 
 def validarEntrada(caracter,cadena):
     if len(cadena) > 10:
@@ -38,18 +39,18 @@ def mostrarMenuEmpleado():
     labelVacio = Label(frameMenuEmpleados, text="", font=('Verdana',20), bg='white')
     labelVacio.grid(row=0, column=0, pady=70, padx=10, sticky=E)
 
-    botonAgregar = Button(frameMenuEmpleados, text = "Agregar Empleado", image = iconoAgregar, bg='white', relief='flat', command=mostrarAltaEmpleados)
+    botonAgregar = Button(frameMenuEmpleados, text = "Agregar Empleado", image = iconoAgregar, bg='white', relief='flat', command=mostrarAltaEmpleado)
     botonAgregar.grid(row=1, column=1, pady=20, padx=40)
     labelAgregar = Label(frameMenuEmpleados, text="Alta Empleado", font=('Verdana',14), bg='white')
     labelAgregar.grid(row=2, column=1)
-    botonEliminar = Button(frameMenuEmpleados, text = "Baja Empleado", image = iconoEliminar, bg='white', relief='flat', command=mostrarBajaEmpleados)
-    botonEliminar.grid(row=1, column=2, pady=20, padx=40)
-    labelEliminar = Label(frameMenuEmpleados, text="Baja Empleado", font=('Verdana',14), bg='white')
-    labelEliminar.grid(row=2, column=2)
-    botonModificar = Button(frameMenuEmpleados, text = "Modificar Empleado", image = iconoModificar, bg='white', relief='flat', command = mostrarModificarEmpleados)
-    botonModificar.grid(row=1, column=3, pady=20, padx=50)
+    botonModificar = Button(frameMenuEmpleados, text = "Modificar Empleado", image = iconoModificar, bg='white', relief='flat', command = mostrarModificarEmpleado)
+    botonModificar.grid(row=1, column=2, pady=20, padx=50)
     labelModificar = Label(frameMenuEmpleados, text="Modificar Empleado", font=('Verdana',14), bg='white')
-    labelModificar.grid(row=2, column=3)
+    labelModificar.grid(row=2, column=2)
+    botonConsultar = Button(frameMenuEmpleados, text = "Consultar Empleados", image = iconoConsultar, bg='white', relief='flat', command=mostrarConsultarEmpleados)
+    botonConsultar.grid(row=1, column=3, pady=20, padx=40)
+    labelConsultar = Label(frameMenuEmpleados, text="Consultar Empleados", font=('Verdana',14), bg='white')
+    labelConsultar.grid(row=2, column=3)
 
 def mostrarMenuHorario():
     for widget in contenedorFrames.winfo_children():
@@ -61,20 +62,23 @@ def mostrarMenuHorario():
     frameMenuHorario.grid_propagate(False)
 
     labelVacio = Label(frameMenuHorario, text="", font=('Verdana',20), bg='white')
-    labelVacio.grid(row=0, column=0, pady=80, padx=50, sticky=E)
+    labelVacio.grid(row=0, column=0, pady=70, padx=10, sticky=E)
+
+    labelVacio2 = Label(frameMenuHorario, text="", font=('Verdana',20), bg='white')
+    labelVacio2.grid(row=1, column=0, padx=10, sticky=E)
 
     botonAgregar = Button(frameMenuHorario, text = "Registrar Horario", image = iconoAgregar, bg='white', relief='flat', command=mostrarRegistrarHorarios)
-    botonAgregar.grid(row=1, column=0, pady=20, padx=40)
+    botonAgregar.grid(row=1, column=1, pady=20, padx=40)
     labelAgregar = Label(frameMenuHorario, text="Registrar Horario", font=('Verdana',14), bg='white')
-    labelAgregar.grid(row=2, column=0)
+    labelAgregar.grid(row=2, column=1)
     botonEliminar = Button(frameMenuHorario, text = "Eliminar Horario", image = iconoEliminar, bg='white', relief='flat', command=mostrarEliminarHorarios)
-    botonEliminar.grid(row=1, column=1, pady=20, padx=40)
+    botonEliminar.grid(row=1, column=2, pady=20, padx=50)
     labelEliminar = Label(frameMenuHorario, text="Eliminar Horario", font=('Verdana',14), bg='white')
-    labelEliminar.grid(row=2, column=1)
+    labelEliminar.grid(row=2, column=2)
     botonConsultar = Button(frameMenuHorario, text = "Consultar Horario", image = iconoConsultar, bg='white', relief='flat', command=mostrarConsultarHorarios)
-    botonConsultar.grid(row=1, column=2, pady=20, padx=40)
+    botonConsultar.grid(row=1, column=3, pady=20, padx=40)
     labelConsultar = Label(frameMenuHorario, text="Consultar Horario", font=('Verdana',14), bg='white')
-    labelConsultar.grid(row=2, column=2)
+    labelConsultar.grid(row=2, column=3)
 
 def mostrarMenuDiaFestivo():
     for widget in contenedorFrames.winfo_children():
@@ -93,11 +97,11 @@ def mostrarMenuDiaFestivo():
     labelAgregar = Label(frameMenuDiaFestivo, text="Registrar Día Festivo", font=('Verdana',14), bg='white')
     labelAgregar.grid(row=2, column=1)
     botonEliminar = Button(frameMenuDiaFestivo, text = "Eliminar Día Festivo", image = iconoEliminar, bg='white', relief='flat', command=mostrarEliminarDiaFestivo)
-    botonEliminar.grid(row=1, column=2, pady=20, padx=40)
+    botonEliminar.grid(row=1, column=2, pady=20, padx=50)
     labelEliminar = Label(frameMenuDiaFestivo, text="Eliminar Día Festivo", font=('Verdana',14), bg='white')
     labelEliminar.grid(row=2, column=2)
     botonConsultar = Button(frameMenuDiaFestivo, text = "Consultar Día Festivo", image = iconoConsultar, bg='white', relief='flat', command = mostrarConsultarDiasFestivo)
-    botonConsultar.grid(row=1, column=3, pady=20, padx=50)
+    botonConsultar.grid(row=1, column=3, pady=20, padx=40)
     labelConsultar = Label(frameMenuDiaFestivo, text="Consultar Día Festivo", font=('Verdana',14), bg='white')
     labelConsultar.grid(row=2, column=3)
 
@@ -118,17 +122,20 @@ def mostrarMenuDiaExcepcion():
     labelAgregar = Label(frameMenuDiaExcepcion, text="Registrar Día Excepción", font=('Verdana',14), bg='white')
     labelAgregar.grid(row=2, column=1)
     botonEliminar = Button(frameMenuDiaExcepcion, text = "Eliminar Día Excepción", image = iconoEliminar, bg='white', relief='flat', command=mostrarEliminarDiaExcepcion)
-    botonEliminar.grid(row=1, column=2, pady=20, padx=40)
+    botonEliminar.grid(row=1, column=2, pady=20, padx=50)
     labelEliminar = Label(frameMenuDiaExcepcion, text="Eliminar Día Excepción", font=('Verdana',14), bg='white')
     labelEliminar.grid(row=2, column=2)
-    botonConsultar = Button(frameMenuDiaExcepcion, text = "Consultar Día Excepción", image = iconoModificar, bg='white', relief='flat', command = mostrarConsultarDiasExcepcion)
-    botonConsultar.grid(row=1, column=3, pady=20, padx=50)
+    botonConsultar = Button(frameMenuDiaExcepcion, text = "Consultar Día Excepción", image = iconoConsultar, bg='white', relief='flat', command = mostrarConsultarDiasExcepcion)
+    botonConsultar.grid(row=1, column=3, pady=20, padx=40)
     labelConsultar = Label(frameMenuDiaExcepcion, text="Consultar Día Excepción", font=('Verdana',14), bg='white')
     labelConsultar.grid(row=2, column=3)
 
 def mostrarIniciarSesion():
+  for widget in contenedorFrames.winfo_children():
+    widget.destroy()
+
   for boton in contenedorBotones.winfo_children():
-        boton.config(state="disabled")
+    boton.config(state="disabled")
 
   nombreModulo.config(text="Iniciar Sesión")
   frameLogin = Frame(contenedorFrames, width=850, height=700, bd=5, bg='white', relief='ridge')
@@ -202,7 +209,7 @@ def mostrarReestablecerContraseña():
   else:
     messagebox.showerror("¡Error!","No fue posible mandar el correo con código de verificación. Intente más tarde.")
 
-def mostrarAltaEmpleados():
+def mostrarAltaEmpleado():
   for widget in contenedorFrames.winfo_children():
       widget.destroy()
   
@@ -250,145 +257,144 @@ def mostrarAltaEmpleados():
   botonBorrar = Button(frameAltaEmpleados, text="Borrar Campos", font=('Verdana',20), command=lambda: empleado.borrar(textoNombreEmpleado,textoApellidoP,textoApellidoM)) 
   botonBorrar.grid(row=5,column=1, pady=70, padx=20, sticky=E)
 
-def mostrarBajaEmpleados():
+def mostrarModificarEmpleado():
   for widget in contenedorFrames.winfo_children():
       widget.destroy()
   
-  empleado = Empleado()
-  nombreModulo.config(text="Baja Empleado")
-  frameBajaEmpleados = Frame(contenedorFrames, width=850, height=700, bd=5, bg='white', relief='ridge')
-  frameBajaEmpleados.grid(row=1,column=0, columnspan=2)
-  frameBajaEmpleados.grid_propagate(False)
-  
-  labelVacio = Label(frameBajaEmpleados, text="",bg='white')
-  labelVacio.grid(row=0,column=0,pady=30)
-
-  labelIdEmpleado = Label(frameBajaEmpleados, text="ID Empleado:", font=('Verdana',20), bg='white')
-  labelIdEmpleado.grid(row=1,column=0, pady=30, sticky=E)
-  idVar= StringVar()
-  textoIdEmpleado = Entry(frameBajaEmpleados, bd=5, font=('Verdana',20), textvariable=idVar)
-  textoIdEmpleado.grid(row=1, column=1, padx=5, pady=30)
-  textoIdEmpleado.bind('<Return>', lambda x: empleado.consultarEmpleado(textoIdEmpleado, textoNombreEmpleado, textoApellidoP, textoApellidoM, db))
-
-  labelNombreEmpleado = Label(frameBajaEmpleados, text="Nombre:", font=('Verdana',20), bg='white')
-  labelNombreEmpleado.grid(row=2,column=0, pady=30, sticky=E)
-  textoNombreEmpleado = Entry(frameBajaEmpleados, bd=5, font=('Verdana',20), state='disabled')
-  textoNombreEmpleado.grid(row=2, column=1, padx=5, pady=30)
-
-  labelApellidoP = Label(frameBajaEmpleados, text="Apellido Paterno:", font=('Verdana',20), bg='white')
-  labelApellidoP.grid(row=3,column=0, pady=30, sticky=E)
-  textoApellidoP = Entry(frameBajaEmpleados, bd=5, font=('Verdana',20), state='disabled')
-  textoApellidoP.grid(row=3, column=1, padx=5, pady=30)
-
-  labelApellidoM = Label(frameBajaEmpleados, text="Apellido Materno:", font=('Verdana',20), bg='white')
-  labelApellidoM.grid(row=4,column=0, pady=30, sticky=E)
-  textoApellidoM = Entry(frameBajaEmpleados, bd=5, font=('Verdana',20), state='disabled')
-  textoApellidoM.grid(row=4, column=1, padx=5, pady=30)
-
-  botonRegistrar = Button(frameBajaEmpleados, text="Baja Empleado", font=('Verdana',20), command=lambda: empleado.bajaEmpleado(textoIdEmpleado,textoNombreEmpleado,textoApellidoP,textoApellidoM,db)) 
-  botonRegistrar.grid(row=5,column=0, padx=90, pady=70, sticky=W)
-
-  botonBorrar = Button(frameBajaEmpleados, text="Borrar Campos", font=('Verdana',20), command=lambda: empleado.borrarAlterno(textoIdEmpleado,textoNombreEmpleado,textoApellidoP,textoApellidoM)) 
-  botonBorrar.grid(row=5,column=1, pady=70, padx=20, sticky=E)
-
-def mostrarModificarEmpleados():
-  for widget in contenedorFrames.winfo_children():
-      widget.destroy()
-  
-  empleado = Empleado()
+  empleados = Empleado()
   nombreModulo.config(text="Modificar Empleado")
   frameModificarEmpleados = Frame(contenedorFrames, width=850, height=700, bd=5, bg='white', relief='ridge')
   frameModificarEmpleados.grid(row=1,column=0, columnspan=2)
   frameModificarEmpleados.grid_propagate(False)
 
-  labelIdEmpleado = Label(frameModificarEmpleados, text="ID Empleado:", font=('Verdana',20), bg='white')
+  labelIdEmpleado = Label(frameModificarEmpleados, text="Empleado:", font=('Verdana',18), bg='white')
   labelIdEmpleado.grid(row=1,column=0, pady=30, sticky=E)
   idVar= StringVar()
-  textoIdEmpleado = Entry(frameModificarEmpleados, bd=5, font=('Verdana',20), textvariable=idVar)
-  textoIdEmpleado.grid(row=1, column=1, padx=5, pady=30)
-  textoIdEmpleado.bind('<Return>', lambda x: empleado.consultarEmpleadoAlterno(textoIdEmpleado, textoNombreEmpleado, textoApellidoP, textoApellidoM, comboEstado, db))
 
-  labelNombreEmpleado = Label(frameModificarEmpleados, text="Nombre:", font=('Verdana',20), bg='white')
+  valores = empleados.listar(db)
+  comboEmpleados = ttk.Combobox(frameModificarEmpleados, values= valores, state="readonly", width=33, font=('Verdana',16))
+  comboEmpleados.grid(row=1, column=1)
+  comboEmpleados.bind("<<ComboboxSelected>>", lambda x: empleados.consultarEmpleado(comboEmpleados, textoNombreEmpleado, textoApellidoP, textoApellidoM, comboEstado, db))
+  comboEmpleados.current(0)
+
+  labelNombreEmpleado = Label(frameModificarEmpleados, text="Nombre:", font=('Verdana',18), bg='white')
   labelNombreEmpleado.grid(row=2,column=0, pady=30, sticky=E)
   nombreVar= StringVar()
-  textoNombreEmpleado = Entry(frameModificarEmpleados, bd=5, textvariable=nombreVar, font=('Verdana',20), state='disabled')
-  textoNombreEmpleado.grid(row=2, column=1, padx=5, pady=30)
+  textoNombreEmpleado = Entry(frameModificarEmpleados, bd=5, textvariable=nombreVar, font=('Verdana',18), state='disabled', width =30)
+  textoNombreEmpleado.grid(row=2, column=1, pady=30, sticky=W)
 
-  labelApellidoP = Label(frameModificarEmpleados, text="Apellido Paterno:", font=('Verdana',20), bg='white')
+  labelApellidoP = Label(frameModificarEmpleados, text="Apellido Paterno:", font=('Verdana',18), bg='white')
   labelApellidoP.grid(row=3,column=0, pady=30, sticky=E)
   apellidoPVar= StringVar()
-  textoApellidoP = Entry(frameModificarEmpleados, bd=5, textvariable=apellidoPVar, font=('Verdana',20), state='disabled')
-  textoApellidoP.grid(row=3, column=1, padx=5, pady=30)
+  textoApellidoP = Entry(frameModificarEmpleados, bd=5, textvariable=apellidoPVar, font=('Verdana',18), state='disabled', width=30)
+  textoApellidoP.grid(row=3, column=1, pady=30, sticky=W)
 
-  labelApellidoM = Label(frameModificarEmpleados, text="Apellido Materno:", font=('Verdana',20), bg='white')
+  labelApellidoM = Label(frameModificarEmpleados, text="Apellido Materno:", font=('Verdana',18), bg='white')
   labelApellidoM.grid(row=4,column=0, pady=30, sticky=E)
   apellidoMVar= StringVar()
-  textoApellidoM = Entry(frameModificarEmpleados, bd=5, textvariable=apellidoMVar, font=('Verdana',20), state='disabled')
-  textoApellidoM.grid(row=4, column=1, padx=5, pady=30)
+  textoApellidoM = Entry(frameModificarEmpleados, bd=5, textvariable=apellidoMVar, font=('Verdana',18), state='disabled', width=30)
+  textoApellidoM.grid(row=4, column=1, pady=30, sticky=W)
 
-  labelEstado = Label(frameModificarEmpleados, text="Estado:", font=('Verdana',20), bg='white')
+  labelEstado = Label(frameModificarEmpleados, text="Estado:", font=('Verdana',18), bg='white')
   labelEstado.grid(row=5,column=0, pady=30, sticky=E)
-  comboEstado= ttk.Combobox(frameModificarEmpleados, state='readonly', font=('Verdana',20))
+  comboEstado= ttk.Combobox(frameModificarEmpleados, state='readonly', font=('Verdana',18), width=20)
   comboEstado['values'] = ('Activo','Baja')
-  comboEstado.grid(row=5, column=1, padx=5, pady=30)
+  comboEstado.grid(row=5, column=1, pady=30, sticky=W)
   comboEstado.current(0)
 
-  botonRegistrar = Button(frameModificarEmpleados, text="Modificar Empleado", font=('Verdana',20), command=lambda: empleado.modificarEmpleado(textoIdEmpleado,textoNombreEmpleado,textoApellidoP,textoApellidoM,comboEstado,db)) 
-  botonRegistrar.grid(row=6,column=0, padx=60, pady=70, sticky=W)
+  botonModificar = Button(frameModificarEmpleados, text="Modificar Empleado", font=('Verdana',20), command=lambda: empleados.modificarEmpleado(comboEmpleados,textoNombreEmpleado,textoApellidoP,textoApellidoM,comboEstado,db)) 
+  botonModificar.grid(row=6,column=0, padx=30, pady=70)
 
   botonBorrar = Button(frameModificarEmpleados, text="Borrar Campos", font=('Verdana',20), command=lambda: empleado.borrarAlterno(textoIdEmpleado,textoNombreEmpleado,textoApellidoP,textoApellidoM)) 
-  botonBorrar.grid(row=6,column=1, pady=70, padx=20, sticky=E)
+  botonBorrar.grid(row=6,column=1, pady=70, padx=10, sticky=E)
+
+def mostrarConsultarEmpleados():
+  for widget in contenedorFrames.winfo_children():
+    widget.destroy()
+
+  nombreModulo.config(text="Consultar Empleados")
+  frameConsultarEmpleados = Frame(contenedorFrames, width=850, height=700, bd=5, bg='white', relief='ridge')
+  frameConsultarEmpleados.grid(row=1, column=0, columnspan=2)
+  frameConsultarEmpleados.grid_propagate(False)
+
+  tablaEmpleados= ttk.Treeview(frameConsultarEmpleados, height=25)
+  tablaEmpleados["columns"] = ['0', '1']
+  tablaEmpleados['show'] = 'headings'
+  tablaEmpleados.grid(row=0, column=0, padx=175, pady=50)
+  tablaEmpleados.column('0', anchor="center")
+  tablaEmpleados.column('1', width=300, anchor="center")
+  tablaEmpleados.heading('0', text="IdEmpleado", anchor="center")
+  tablaEmpleados.heading('1', text="Nombre Completo", anchor="center")
+
+  empleados= Empleado()
+  listaEmpleados = empleados.listar(db)
+
+  for empleado in listaEmpleados:
+      tablaEmpleados.insert('', END, text=empleado[0], values=(empleado[0:7], empleado[8:]))
 
 def mostrarRegistrarEmpresa():
   for widget in contenedorFrames.winfo_children():
           widget.destroy()
   
-  comandos = db.cursor()
-  comandos.execute('SELECT * from Empresa')
-  respuesta = comandos.fetchone()
-  nombreModulo.config(text="Registrar Empresa")
+  for boton in contenedorBotones.winfo_children():
+        boton.config(state="disabled")
 
-  if not respuesta:
-    messagebox.showerror('¡Error!','Ya hay una empresa registrada.')
-  else:
-    empresa = Empresa()
+  empresa = Empresa()
     
-    frameRegistrarEmpresa = Frame(contenedorFrames, width=850, height=700, bd=5, bg='white', relief='ridge')
-    frameRegistrarEmpresa.grid(row=1,column=0, columnspan=2)
-    frameRegistrarEmpresa.grid_propagate(False)
+  frameRegistrarEmpresa = Frame(contenedorFrames, width=850, height=700, bd=5, bg='white', relief='ridge')
+  frameRegistrarEmpresa.grid(row=1,column=0, columnspan=2)
+  frameRegistrarEmpresa.grid_propagate(False)
 
-    labelRFC = Label(frameRegistrarEmpresa, text="RFC:", font=('Verdana',20), bg='white')
-    labelRFC.grid(row=1,column=0, pady=30, sticky=E)
-    RFCVar= StringVar()
-    textoRFC = Entry(frameRegistrarEmpresa, bd=5, font=('Verdana',20), textvariable=RFCVar)
-    textoRFC.grid(row=1, column=1, padx=5, pady=30)
+  labelVacio = Label(frameRegistrarEmpresa, text="", font=('Verdana',20), bg='white')
+  labelVacio.grid(row=0,column=0, pady=5, sticky=E)
 
-    labelNombreEmpresa = Label(frameRegistrarEmpresa, text="Nombre:", font=('Verdana',20), bg='white')
-    labelNombreEmpresa.grid(row=2,column=0, pady=30, sticky=E)
-    nombreVar= StringVar()
-    textoNombreEmpresa = Entry(frameRegistrarEmpresa, bd=5, textvariable=nombreVar, font=('Verdana',20))
-    textoNombreEmpresa.grid(row=2, column=1, padx=5, pady=30)
+  labelRFC = Label(frameRegistrarEmpresa, text="RFC:", font=('Verdana',20), bg='white')
+  labelRFC.grid(row=1,column=0, pady=10, sticky=E)
+  RFCVar= StringVar()
+  textoRFC = Entry(frameRegistrarEmpresa, bd=5, font=('Verdana',20), textvariable=RFCVar)
+  textoRFC.grid(row=1, column=1, padx=5, pady=10)
 
-    labelDireccion = Label(frameRegistrarEmpresa, text="Dirección:", font=('Verdana',20), bg='white')
-    labelDireccion.grid(row=3,column=0, pady=30, sticky=E)
-    apellidoPVar= StringVar()
-    textoDireccion = Entry(frameRegistrarEmpresa, bd=5, textvariable=apellidoPVar, font=('Verdana',20))
-    textoDireccion.grid(row=3, column=1, padx=5, pady=30)
+  labelNombreEmpresa = Label(frameRegistrarEmpresa, text="Nombre:", font=('Verdana',20), bg='white')
+  labelNombreEmpresa.grid(row=2,column=0, pady=10, sticky=E)
+  nombreVar= StringVar()
+  textoNombreEmpresa = Entry(frameRegistrarEmpresa, bd=5, textvariable=nombreVar, font=('Verdana',20))
+  textoNombreEmpresa.grid(row=2, column=1, padx=5, pady=10)
 
-    labelTelefono = Label(frameRegistrarEmpresa, text="Teléfono:", font=('Verdana',20), bg='white')
-    labelTelefono.grid(row=4,column=0, pady=30, sticky=E)
-    textoTelefono = Entry(frameRegistrarEmpresa, bd=5, validate='key', font=('Verdana',20))
-    textoTelefono['validatecommand'] = (textoTelefono.register(validarEntrada),'%S','%P')
-    textoTelefono.grid(row=4, column=1, padx=5, pady=30)
+  labelDireccion = Label(frameRegistrarEmpresa, text="Dirección:", font=('Verdana',20), bg='white')
+  labelDireccion.grid(row=3,column=0, pady=10, sticky=E)
+  apellidoPVar= StringVar()
+  textoDireccion = Entry(frameRegistrarEmpresa, bd=5, textvariable=apellidoPVar, font=('Verdana',20))
+  textoDireccion.grid(row=3, column=1, padx=5, pady=10)
 
-    labelEmail = Label(frameRegistrarEmpresa, text="E-mail:", font=('Verdana',20), bg='white')
-    labelEmail.grid(row=5,column=0, pady=30, sticky=E)
-    emailVar = StringVar()
-    textoEmail = Entry(frameRegistrarEmpresa, bd=5, textvariable=emailVar, font=('Verdana',20))
-    textoEmail.grid(row=5, column=1, padx=5, pady=30)
+  labelTelefono = Label(frameRegistrarEmpresa, text="Teléfono:", font=('Verdana',20), bg='white')
+  labelTelefono.grid(row=4,column=0, pady=10, sticky=E)
+  textoTelefono = Entry(frameRegistrarEmpresa, bd=5, validate='key', font=('Verdana',20))
+  textoTelefono['validatecommand'] = (textoTelefono.register(validarEntrada),'%S','%P')
+  textoTelefono.grid(row=4, column=1, padx=5, pady=10)
 
-    botonRegistrar = Button(frameRegistrarEmpresa, text="Registrar Empresa", font=('Verdana',20), command=lambda: empresa.registrarEmpresa(textoRFC,textoNombreEmpresa,textoDireccion,textoTelefono,textoEmail,botonRegistrar, db)) 
-    botonRegistrar.grid(row=6,column=0, padx=60, pady=70, sticky=W)
+  labelEmail = Label(frameRegistrarEmpresa, text="E-mail:", font=('Verdana',20), bg='white')
+  labelEmail.grid(row=5,column=0, pady=10, sticky=E)
+  emailVar = StringVar()
+  textoEmail = Entry(frameRegistrarEmpresa, bd=5, textvariable=emailVar, font=('Verdana',20))
+  textoEmail.grid(row=5, column=1, padx=5, pady=10)
+
+  labelContrasena = Label(frameRegistrarEmpresa, text="Contraseña:", font=('Verdana',20), bg='white')
+  labelContrasena.grid(row=6,column=0, pady=10, sticky=E)
+  contrasenaVar = StringVar()
+  textoContrasena = Entry(frameRegistrarEmpresa, bd=5, textvariable=contrasenaVar, font=('Verdana',20))
+  textoContrasena.grid(row=6, column=1, padx=5, pady=10)
+
+  labelContrasenaV = Label(frameRegistrarEmpresa, text="Repetir contraseña:", font=('Verdana',20), bg='white')
+  labelContrasenaV.grid(row=7,column=0, pady=10, sticky=E)
+  contrasenaVVar = StringVar()
+  textoContrasenaV = Entry(frameRegistrarEmpresa, bd=5, textvariable=contrasenaVVar, font=('Verdana',20))
+  textoContrasenaV.grid(row=7, column=1, padx=20, pady=10)
+
+  botonRegistrar = Button(frameRegistrarEmpresa, text="Registrar Empresa", font=('Verdana',20), command=lambda: empresa.registrarEmpresa(textoRFC, textoNombreEmpresa, textoDireccion, textoTelefono,textoEmail, textoContrasena, textoContrasenaV, botonRegistrar, botonIniciarSesion, db)) 
+  botonRegistrar.grid(row=8,column=0, padx=50, pady=50, sticky=E)
+
+  botonIniciarSesion = Button(frameRegistrarEmpresa, text="Iniciar Sesión", state = 'disabled', font=('Verdana',20), command=mostrarIniciarSesion ) 
+  botonIniciarSesion.grid(row=8,column=1, padx=50, pady=50, sticky=E)
 
 def mostrarConsultarEmpresa():
   for widget in contenedorFrames.winfo_children():
@@ -454,7 +460,7 @@ def mostrarRegistrarDiaFestivo():
   labelFecha = Label(frameRegistrarDiaFeriado, text="Nuevo día festivo:", font=('Verdana',20), bg='white')
   labelFecha.grid(row=1, column=1, pady=30)
 
-  calendario = Calendar(frameRegistrarDiaFeriado, selectmode = 'day')
+  calendario = Calendar(frameRegistrarDiaFeriado, selectmode = 'day', locale='es_MX')
   calendario.grid(row=2, column=1, pady=30)
 
   diaFestivo = DiaFestivo()
@@ -485,7 +491,7 @@ def mostrarRegistrarDiaExcepcion():
   labelFecha = Label(frameRegistrarDiaExcepcion, text="Nuevo día Excepción:", font=('Verdana',20), bg='white')
   labelFecha.grid(row=3, column=1, columnspan = 2, pady=30)
 
-  calendario = Calendar(frameRegistrarDiaExcepcion, selectmode = 'day')
+  calendario = Calendar(frameRegistrarDiaExcepcion, selectmode = 'day', locale='es_MX')
   calendario.grid(row=4, column=1, columnspan = 2, pady=30)
 
   botonRegistrarDiaExcepcion= Button(frameRegistrarDiaExcepcion, text="Registrar día", font=('Verdana',20), command=lambda: diaExcepcion.registrarDiaExcepcion(comboEmpleados,calendario,db)) 
@@ -747,7 +753,55 @@ def mostrarEliminarHorarios():
   botonEliminarHorario = Button(frameEliminarHorario, text="Eliminar Horario", font=('Verdana',20), command=lambda: horario.eliminarHorario(comboEmpleados, tablaHorario, db)) 
   botonEliminarHorario.grid(row=3, column=0, columnspan=2, padx=300, pady=20, sticky=W)
 
+def mostrarGenerarReporte():
+  for widget in contenedorFrames.winfo_children():
+    widget.destroy()
 
+  nombreModulo.config(text="Generar Reporte")
+  frameGenerarReporte = Frame(contenedorFrames, width=850, height=700, bd=5, bg='white', relief='ridge')
+  frameGenerarReporte.grid(row=1, column=0, columnspan=2)
+  frameGenerarReporte.grid_propagate(False)
+
+  empleado = Empleado()
+  reporte = Reporte()
+  valores = empleado.listar(db)
+
+  labelVacio = Label(frameGenerarReporte, text="", font=('Verdana',18), bg='white')
+  labelVacio.grid(row=0, column=0, pady=5)
+
+  labelEmpleados = Label(frameGenerarReporte, text="Empleado:", font=('Verdana',18), bg='white')
+  labelEmpleados.grid(row=3, column=0, pady=20)
+
+  comboEmpleados = ttk.Combobox(frameGenerarReporte, values= valores, state="readonly", width=40, font=('Verdana',16))
+  comboEmpleados.grid(row=3, column=1)
+  comboEmpleados.bind("<<ComboboxSelected>>", lambda x: reporte.llenarTabla(tablaReporte,comboEmpleados,fechaInicio,fechaFin,db))
+  comboEmpleados.current(0)
+
+  labelInicio = Label(frameGenerarReporte, text="Fecha Inicio", font=('Verdana',18), bg='white')
+  labelInicio.grid(row=1, column=0, pady=5)
+  fechaInicio = DateEntry(frameGenerarReporte, font=('Verdana',16), locale='es_MX')
+  fechaInicio.grid(row=2, column=0, padx=10)
+
+  labelFin = Label(frameGenerarReporte, text="Fecha Fin", font=('Verdana',18), bg='white')
+  labelFin.grid(row=1, column=1, pady=5)
+  fechaFin = DateEntry(frameGenerarReporte, font=('Verdana',16), locale='es_MX')
+  fechaFin.grid(row=2, column=1)
+
+  tablaReporte= ttk.Treeview(frameGenerarReporte, height=15)
+  tablaReporte["columns"] = ['0', '1','2','3']
+  tablaReporte['show'] = 'headings'
+  tablaReporte.grid(row=4, column=0, columnspan=2,padx=15, pady=10)
+  tablaReporte.column('0', anchor="center")
+  tablaReporte.column('1', anchor="center")
+  tablaReporte.column('2', anchor="center")
+  tablaReporte.column('3', anchor="center")
+  tablaReporte.heading('0', text="Fecha", anchor="center")
+  tablaReporte.heading('1', text="Hora Entrada", anchor="center")
+  tablaReporte.heading('2', text="Hora Salida", anchor="center")
+  tablaReporte.heading('3', text="Horas Efectivas", anchor="center")
+
+  botonExportarReporte = Button(frameGenerarReporte, text="Exportar Reporte", font=('Verdana',18),command=lambda: reporte.exportarCSV(comboEmpleados,fechaInicio,fechaFin,db)) 
+  botonExportarReporte.grid(row=5, column=0, columnspan=2, pady=20)
 
 #Conexión a la base de datos 
 server = SSHTunnelForwarder(("198.54.125.222", 21098),
@@ -807,9 +861,9 @@ botonDiaF = Button(contenedorBotones, text = "Día Festivo", image = iconoFestiv
 botonDiaF.grid(row=2, column=0, padx=10, pady=12)
 botonDiaE = Button(contenedorBotones, text = "Dia Excepción", image = iconoExcepcion, bg='white', relief='flat', command=mostrarMenuDiaExcepcion)
 botonDiaE.grid(row=3, column=0, padx=10, pady=12)
-botonEmpresa = Button(contenedorBotones, text = "Reporte", image = iconoEmpresa, bg='white', relief='flat', command=mostrarRegistrarEmpresa)
+botonEmpresa = Button(contenedorBotones, text = "Reporte", image = iconoEmpresa, bg='white', relief='flat', command=mostrarConsultarEmpresa)
 botonEmpresa.grid(row=4, column=0, padx=10, pady=12)
-botonReporte = Button(contenedorBotones, text = "Empresa", image = iconoReporte, bg='white', relief='flat')
+botonReporte = Button(contenedorBotones, text = "Empresa", image = iconoReporte, bg='white', relief='flat', command=mostrarGenerarReporte)
 botonReporte.grid(row=5, column=0, padx=10, pady=12)
 botonCerrar = Button(contenedorBotones, text = "Cerrar", image = iconoCerrar, bg='white', relief='flat', command=cerrarSesion)
 botonCerrar.grid(row=6, column=0, padx=10, pady=12)
@@ -817,7 +871,14 @@ botonCerrar.grid(row=6, column=0, padx=10, pady=12)
 ventanaPrincipal.config(cursor="arrow")
 ventanaPrincipal.config(bg="white")
 
-mostrarIniciarSesion()
+comandos = db.cursor()
+comandos.execute("SELECT * FROM Empresa")
+resultado = comandos.fetchone()
+
+if resultado:
+    mostrarIniciarSesion()
+else:
+    mostrarRegistrarEmpresa()
 
 ventanaPrincipal.mainloop()
 

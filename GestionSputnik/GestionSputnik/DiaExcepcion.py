@@ -16,6 +16,7 @@ class DiaExcepcion():
 
             if mensaje=='yes':
                 try:
+                    print(type(calendario.selection_get()))
                     comandos = db.cursor()
 
                     query = 'SELECT fecha FROM DiaExcepcion WHERE fecha="{}" AND idEmpleado="{}" AND estado=1'.format(calendario.selection_get(), idEmpleado)
@@ -23,7 +24,7 @@ class DiaExcepcion():
                     repetido = comandos.fetchone()
 
                     if not repetido:
-                        query = 'INSERT INTO DiaExcepcion (idEmpleado,fecha) VALUES ("{}","{}");'.format(idEmpleado, calendario.selection_get())
+                        query = 'INSERT INTO DiaExcepcion (idEmpleado,fecha) VALUES ("{}","{}")'.format(idEmpleado, calendario.selection_get())
                         comandos.execute(query)
                         messagebox.showinfo('Registrar Día Excepcion','Día registrado con éxito.')
 

@@ -22,6 +22,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Administrador.py" />
+    <Compile Include="Reporte.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DiaExcepcion.py" />
     <Compile Include="DiaFestivo.py" />
     <Compile Include="Empleado.py" />
