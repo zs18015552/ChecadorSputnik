@@ -200,7 +200,7 @@ def mostrarReestablecerContraseña():
     textoPasswordV = Entry(frameLogin, bd=5, textvariable=passwordVVar, font=('Verdana',20), show='*')
     textoPasswordV.grid(row=4, column=1, pady=30)
 
-    botonCambiarContraseña = Button(frameLogin, text="Cambiar contraseña", font=('Verdana',20), command=lambda: admin.cambiarContrasena(textoCodigo, botonCambiarContraseña, textoPassword, textoPasswordV, db)) 
+    botonCambiarContraseña = Button(frameLogin, text="Cambiar contraseña", font=('Verdana',20), command=lambda: admin.cambiarContrasena(botonCambiarContraseña, textoCodigo, textoPassword, textoPasswordV, db)) 
     botonCambiarContraseña.grid(row=6, column=0, pady=80, padx=60)
 
     botonRegresar = Button(frameLogin, text="Regresar", font=('Verdana',20), command=mostrarIniciarSesion) 

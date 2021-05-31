@@ -68,7 +68,7 @@ class Administrador():
         return True
 
     def cambiarContrasena(self, boton, codigo, contrasena, verificacion, db):
-        if (not contrasena.get()) or (not verificacion.get()) or (not contrasena.get()):
+        if (not codigo.get()) or (not verificacion.get()) or (not contrasena.get()):
             messagebox.showerror('¡Error!','Favor de llenar todos los campos.')
 
         else:
@@ -94,8 +94,10 @@ class Administrador():
 
                         messagebox.showinfo("Cambiar Contraseña", "Contraseña cambiada con éxito")
 
-                        for widget in contenedorFrames.winfo_children():
-                            widget.config(state='disabled')
+                        boton.config(state='disabled')
+                        codigo.config(state='disabled')
+                        contrasena.config(state='disabled')
+                        verificacion.config(state='disabled')
 
                     except Exception as e:
                         messagebox.showerror('¡Error!','No fue posible hacer el cambio de contraseña. ' + str(e))
