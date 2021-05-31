@@ -251,8 +251,8 @@ def mostrarAltaEmpleado():
   textoApellidoM = Entry(frameAltaEmpleados, bd=5, textvariable=apellidoMVar, font=('Verdana',20))
   textoApellidoM.grid(row=4, column=1, padx=5, pady=30)
 
-  botonRegistrar = Button(frameAltaEmpleados, text="Registrar Empleados", font=('Verdana',20), command=lambda: empleado.altaEmpleado(textoIdEmpleado,textoNombreEmpleado,textoApellidoP,textoApellidoM,db)) 
-  botonRegistrar.grid(row=5,column=0, padx=60, pady=70, sticky=W)
+  botonRegistrar = Button(frameAltaEmpleados, text="Alta Empleado", font=('Verdana',20), command=lambda: empleado.altaEmpleado(textoIdEmpleado,textoNombreEmpleado,textoApellidoP,textoApellidoM,db)) 
+  botonRegistrar.grid(row=5,column=0, padx=80, pady=70, sticky=W)
 
   botonBorrar = Button(frameAltaEmpleados, text="Borrar Campos", font=('Verdana',20), command=lambda: empleado.borrar(textoNombreEmpleado,textoApellidoP,textoApellidoM)) 
   botonBorrar.grid(row=5,column=1, pady=70, padx=20, sticky=E)
@@ -778,12 +778,12 @@ def mostrarGenerarReporte():
   comboEmpleados.current(0)
 
   labelInicio = Label(frameGenerarReporte, text="Fecha Inicio", font=('Verdana',18), bg='white')
-  labelInicio.grid(row=1, column=0, pady=5)
+  labelInicio.grid(row=1, column=0)
   fechaInicio = DateEntry(frameGenerarReporte, font=('Verdana',16), locale='es_MX')
   fechaInicio.grid(row=2, column=0, padx=10)
 
   labelFin = Label(frameGenerarReporte, text="Fecha Fin", font=('Verdana',18), bg='white')
-  labelFin.grid(row=1, column=1, pady=5)
+  labelFin.grid(row=1, column=1)
   fechaFin = DateEntry(frameGenerarReporte, font=('Verdana',16), locale='es_MX')
   fechaFin.grid(row=2, column=1)
 
@@ -824,7 +824,7 @@ except Exception as e:
     messagebox.showerror("Conexión a la base de datos", "No se pudo conectar a la base de datos. " + str(e))
 
 ventanaPrincipal = Tk()
-ventanaPrincipal.title("Checador Sputnik")
+ventanaPrincipal.title("Gestión Sputnik")
 ventanaAncho = ventanaPrincipal.winfo_reqwidth()
 ventanaLargo = ventanaPrincipal.winfo_reqheight()
 posicionDerecha = int(ventanaPrincipal.winfo_screenwidth()/2 - ventanaAncho/0.4)

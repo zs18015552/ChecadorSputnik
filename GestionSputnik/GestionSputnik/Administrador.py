@@ -73,7 +73,7 @@ class Administrador():
 
         else:
             if not contrasena.get()==verificacion.get():
-                messagebox.showerror('¡Error!','La contraseña no coinciden en los campos.')
+                messagebox.showerror('¡Error!','Las contraseñas no coinciden en los campos.')
 
             else:
                 comandos = db.cursor()
@@ -84,7 +84,7 @@ class Administrador():
                 codigoBD = resultado[0]
 
                 if not codigo.get()==str(codigoBD):
-                    messagebox.showerror("¡Error!","Codigo de reestablecimiento de contraseña incorrecto.")
+                    messagebox.showerror("¡Error!","Codigo de verificación incorrecto.")
 
                 else:
                     try:

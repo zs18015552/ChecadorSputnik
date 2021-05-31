@@ -62,7 +62,7 @@ class Empleado():
                     query = 'INSERT INTO Empleados (nombre,apellidoPaterno,apellidoMaterno) VALUES ("{}","{}","{}")'.format(nombre.get(),apellidoP.get(),apellidoM.get())
                     comandos.execute(query)
                     db.commit()
-                    messagebox.showinfo("Alta Empleado","Empleado registrado con éxito.")
+                    messagebox.showinfo("Alta Empleado","Empleado dado de alta con éxito.")
                     self.borrar(nombre,apellidoP,apellidoM)
                     idEmpleado.config(state='normal')
                     id = int(idEmpleado.get()) + 1
@@ -70,7 +70,7 @@ class Empleado():
                     idEmpleado.insert(0,id)
                     idEmpleado.config(state='disabled')
             except Exception as e:
-                messagebox.showerror('¡Error!','No se pudo registrar al empleado. ' + str(e))
+                messagebox.showerror('¡Error!','No se pudo dar de alta al empleado. ' + str(e))
 
     def modificarEmpleado(self, empleado, nombre, apellidoP, apellidoM, estado, db):
         idEmpleado = empleado.get()[0:7]
