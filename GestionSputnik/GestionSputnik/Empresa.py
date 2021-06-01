@@ -4,7 +4,7 @@ class Empresa():
     def registrarEmpresa(self, rfc, nombre, direccion, telefono, email, contrasena, contrasenaV, botonRegistrar, botonIniciar, db):
         #Verifica que los campos esten llenos
         if (not nombre.get()) or (not direccion.get()) or (not telefono.get()) or (not email.get()) or (not contrasena.get()) or (not contrasenaV.get()) and (not contrasena.get()==contrasena.get()):
-            mensaje = messagebox.showerror('¡Error!','Favor de llenar todos los campos correctamente.')
+            messagebox.showerror('¡Error!','Favor de llenar todos los campos correctamente.')
         else:
             try:
                 comandos = db.cursor()
@@ -23,8 +23,10 @@ class Empresa():
                     contrasenaV.config(state='disabled')
                     botonRegistrar.config(state='disabled')
                     botonIniciar.config(state='normal')
+
+                    messagebox.showinfo('Registrar Empresa','Empresa registrada con éxito.')
             except Exception as e:
-                mensaje = messagebox.showerror('¡Error!','No se pudo registrar la empresa. ' + str(e))
+                messagebox.showerror('¡Error!','No se pudo registrar la empresa. ' + str(e))
 
     def consultarEmpresa(self, db):
         try: 
@@ -33,4 +35,4 @@ class Empresa():
             resultado = comandos.fetchone()
             return resultado
         except Exception as e:
-            mensaje = messagebox.showerror('¡Error!','No se pudo consultar la información de la empresa.' + str(e))
+            messagebox.showerror('¡Error!','No se pudo consultar la información de la empresa.' + str(e))

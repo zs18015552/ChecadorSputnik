@@ -8,8 +8,8 @@ class DiaExcepcion():
 
         idEmpleado = empleado.get()[0:7]
 
-        if not (calendario.selection_get()):
-            mensaje = messagebox.showerror('¡Error!','Favor de seleccionar una fecha.')
+        if not (calendario.selection_get()) and not empleado.get():
+            mensaje = messagebox.showerror('¡Error!','Favor de seleccionar un empleado y/o una fecha.')
         
         else:
             mensaje = messagebox.askquestion('Registar Día Excepción','¿Estás seguro que la información es correcta?')
@@ -75,7 +75,7 @@ class DiaExcepcion():
                     comandos.execute(query)
                     db.commit()
 
-                    mensaje = messagebox.showinfo('Eliminar Día Excepción','Día eliminado con éxito.')
+                    messagebox.showinfo('Eliminar Día Excepción','Día eliminado con éxito.')
 
                     comandos.execute('SET lc_time_names = "es_MX"')
                     query='SELECT idExcepcion, dayname(fecha), day(fecha), monthname(fecha), year(fecha) FROM DiaExcepcion WHERE estado=1 AND idEmpleado={} ORDER BY IdExcepcion'.format(idEmpleado)

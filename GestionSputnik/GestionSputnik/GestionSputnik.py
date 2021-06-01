@@ -340,7 +340,8 @@ def mostrarRegistrarEmpresa():
         boton.config(state="disabled")
 
   empresa = Empresa()
-    
+   
+  nombreModulo.config(text="Registrar Empresa")
   frameRegistrarEmpresa = Frame(contenedorFrames, width=850, height=700, bd=5, bg='white', relief='ridge')
   frameRegistrarEmpresa.grid(row=1,column=0, columnspan=2)
   frameRegistrarEmpresa.grid_propagate(False)
@@ -824,7 +825,7 @@ except Exception as e:
     messagebox.showerror("Conexión a la base de datos", "No se pudo conectar a la base de datos. " + str(e))
 
 ventanaPrincipal = Tk()
-ventanaPrincipal.title("Gestión Sputnik")
+ventanaPrincipal.title("Gestión Sputnik v1.0")
 ventanaAncho = ventanaPrincipal.winfo_reqwidth()
 ventanaLargo = ventanaPrincipal.winfo_reqheight()
 posicionDerecha = int(ventanaPrincipal.winfo_screenwidth()/2 - ventanaAncho/0.4)

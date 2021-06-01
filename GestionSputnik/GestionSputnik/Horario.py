@@ -35,12 +35,16 @@ class Horario():
             mensaje = messagebox.askquestion('Registar Horario','¿Estás seguro que la información es correcta?')
             if mensaje=='yes':
                 try:
+                    id = comboEmpleado.get()[0:7]
                     valores=list()
                     for linea in tabla.get_children():
-                        lista= (comboEmpleado.get()[0:7],) + tabla.item(linea,"values")
+                        lista= (id,) + tabla.item(linea,"values")
                         valores.append(lista)
 
                     comandos = db.cursor()
+                    query = 'UPDATE Horarios SET estado = 0 WHERE idEmpleado ={}'.format(id)
+                    comandos.execute(query)
+                    db.commit()
                     query='INSERT INTO Horarios (idEmpleado,dia,horaInicio,horaFin) VALUES (%s,%s,%s,%s)'
                     comandos.executemany(query,valores)
                     db.commit()
@@ -56,24 +60,27 @@ class Horario():
                     messagebox.showerror('¡Error!','No se pudo registrar el horario. ' + str(e))
 
     def eliminarHorario(self,comboEmpleado, tabla,db):
-        mensaje = messagebox.askquestion('Eliminar Horario','¿Estás seguro deseas proceder con la operación?')
+        if not tabla.get_children():
+            messagebox.showerror('¡Error!','La tabla de horarios está vacía. ')
+        else:
+            mensaje = messagebox.askquestion('Eliminar Horario','¿Estás seguro deseas proceder con la operación?')
 
-        if mensaje=='yes':
-            id = comboEmpleado.get()[0:7]        
+            if mensaje=='yes':
+                id = comboEmpleado.get()[0:7]        
 
-            try:
-                comandos = db.cursor()
+                try:
+                    comandos = db.cursor()
 
-                query = 'UPDATE Horarios SET estado = 0 WHERE idEmpleado ={}'.format(id)
-                comandos.execute(query)
-                db.commit()
+                    query = 'UPDATE Horarios SET estado = 0 WHERE idEmpleado ={}'.format(id)
+                    comandos.execute(query)
+                    db.commit()
 
-                messagebox.showinfo('Eliminar Horario','Horario eliminado con éxito.')
+                    messagebox.showinfo('Eliminar Horario','Horario eliminado con éxito.')
 
-                self.borrarTabla(tabla)
+                    self.borrarTabla(tabla)
 
-            except Exception as e:
-                messagebox.showerror('Eliminar Horario','No se pudo eliminar el horario. ' + str(e))
+                except Exception as e:
+                    messagebox.showerror('Eliminar Horario','No se pudo eliminar el horario. ' + str(e))
 
     def listarHorario(self, comboEmpleados, tabla, db):
         id = comboEmpleados.get()[0:7]
