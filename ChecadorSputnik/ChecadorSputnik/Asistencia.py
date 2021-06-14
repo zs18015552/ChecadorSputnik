@@ -14,7 +14,9 @@ class Asistencia():
 
         #Al no encontrar resultado de la consulta manda mensaje de error
         if not empleado:
-            messagebox.showerror('¡Error!','Empleado no existente.')
+            mensaje.config(text="Empleado no encontrado.")
+            mensaje.update_idletasks()
+
         else:
             #Consulta el nombre y lo pone en el Label
             query = 'SELECT CONCAT_WS(" ",nombre,apellidoPaterno,apellidoMaterno) AS nombreCompleto FROM Empleados WHERE idEmpleado={} LIMIT 1'.format(idEmpleado.get())
@@ -28,31 +30,28 @@ class Asistencia():
             query='SELECT DAYNAME(CURDATE()), TIME_TO_SEC(CURTIME())'
             comandos.execute(query)
             resultado = comandos.fetchone()
-            print(resultado)
             diaCheck= resultado[0]
             horaCheck = int(resultado[1])
 
-            query = 'SELECT dia, TIME_TO_SEC(horaInicio), TIME_TO_SEC(horaFin) FROM Horarios WHERE idEmpleado = {} AND dia = "{}"'.format(idEmpleado.get(), diaCheck)
+            query = 'SELECT dia, TIME_TO_SEC(horaInicio), TIME_TO_SEC(horaFin) FROM Horarios WHERE idEmpleado = {} AND dia = "{}" AND estado = 1'.format(idEmpleado.get(), diaCheck)
             comandos.execute(query)
             resultado = comandos.fetchone()
-            print(resultado)
-
-            diaHorario = resultado[0]
-            horaInicio = int(resultado[1])
-            horaInicio15minMas = horaInicio + 900
-            horaInicio15minMenos = horaInicio - 900
-            horaFin = int(resultado[2])
-            horaFin15minMas = horaFin + 900
-            horaFin15minMenos = horaFin - 900
             
             if not resultado:
                 mensaje.config(text="Imposible registrar, fuera de horario.")
                 mensaje.update_idletasks()
             else:
+                diaHorario = resultado[0]
+                horaInicio = int(resultado[1])
+                horaInicio15minMas = horaInicio + 900
+                horaInicio15minMenos = horaInicio - 900
+                horaFin = int(resultado[2])
+                horaFin15minMas = horaFin + 900
+                horaFin15minMenos = horaFin - 900
+
                 query = 'SELECT idAsistencia, TIME_TO_SEC(horaEntrada), TIME_TO_SEC(horaSalida) FROM Asistencia WHERE fecha = CURDATE() AND idEmpleado = {}'.format(idEmpleado.get())
                 comandos.execute(query)
                 resultado = comandos.fetchone()
-                print(resultado)
 
                 if not resultado: 
                     query = 'INSERT INTO Asistencia (idEmpleado, horaEntrada) VALUES ("{}", CURTIME())'.format(idEmpleado.get())
@@ -86,10 +85,10 @@ class Asistencia():
                         mensaje.config(text="Imposible registrar, ya existe registro del día.")
                         mensaje.update_idletasks()
 
-            time.sleep(5)
-            labelNombreEmpleado.config(text="<<Nombre>>", fg='gray')
-            mensaje.config(text="")
-            idEmpleado.delete(0,END)
+        time.sleep(5)
+        labelNombreEmpleado.config(text="<<Nombre>>", fg='gray')
+        mensaje.config(text="")
+        idEmpleado.delete(0,END)
 
 
 
