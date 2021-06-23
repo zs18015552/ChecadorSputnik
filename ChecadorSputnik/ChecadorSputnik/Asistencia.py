@@ -54,7 +54,7 @@ class Asistencia():
                 resultado = comandos.fetchone()
 
                 if not resultado: 
-                    query = 'INSERT INTO Asistencia (idEmpleado, horaEntrada) VALUES ("{}", CURTIME())'.format(idEmpleado.get())
+                    query = 'INSERT INTO Asistencia (idEmpleado, horaEntrada) VALUES ("{}", DATE_SUB(NOW(), INTERVAL 1 HOUR))'.format(idEmpleado.get())
                     comandos.execute(query)
                     db.commit()
 
@@ -71,7 +71,7 @@ class Asistencia():
                     horaFin = int(resultado[2])
 
                     if horaFin == 0:
-                        query = 'UPDATE Asistencia SET horaSalida= CURTIME() WHERE idAsistencia = {}'.format(idAsistencia)
+                        query = 'UPDATE Asistencia SET horaSalida= DATE_SUB(NOW(), INTERVAL 1 HOUR) WHERE idAsistencia = {}'.format(idAsistencia)
                         comandos.execute(query)
                         db.commit()
                         if (horaCheck >= horaFin15minMenos) and (horaCheck <= horaFin15minMas): 
